@@ -1,0 +1,2476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saladin Pharma - Clinic Management System</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2FsYWRpbiBQaGFybWEiLCJzaG9ydF9uYW1lIjoiU2FsYWRpbiBQaGFybWEiLCJkZXNjcmlwdGlvbiI6IkNsaW5pYyBNYW5hZ2VtZW50IFN5c3RlbSIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjNUQ1Q0RFIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1UQXlOQ0lnYUdWcFoyaDBQU0l4TURJMElpQjJhV1YzUW05NFBTSXdJREFnTVRBeU5DQXhNREkwSWlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpUGp4eVpXTjBJSGRwWkhSb1BTSXhNREkwSWlCb1pXbG5hSFE5SWpFd01qUWlJR1pwYkd3OUlpTTFSRFZEUkVVaUx6NDhkR1Y0ZENCNFBTSTFNVELPSUPOAEFEQ0NTQUY3PTg3VmFHOGJpTAWUTMWlxFT45wNJ4tEm5NeYkiMEO2DpJD4+PHKZUo4YxJSLTESO2NESEn0wuCCWvT40QaODKPzCu8CY2C0YKKh7pOnc+rNwX0JvKBwgTF8hBLBaKlpyZ80zcfMPHmtceCXP5XlsB3q4oJHQZgHGhQ3nPzaYBgO2X5yNMLNMFsHNkVeQR1C3oQOZHJNcIqBsQfSE1B+r7h09+nRQhCOI=","sizes":"1024x1024","type":"image/svg+xml"}]}">
+    <meta name="theme-color" content="#5D5CDE">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAyNCIgaGVpZ2h0PSIxMDI0IiB2aWV3Qm94PSIwIDAgMTAyNCAxMDI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDI0IiBoZWlnaHQ9IjEwMjQiIGZpbGw9IiM1RDVDREUiLz48dGV4dCB4PSI1MTIiIHk9IjU1MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQwMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfjJI8L3RleHQ+PC9zdmc+">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/dexie@3.2.4/dist/dexie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #5D5CDE;
+            --primary-dark: #4B4AC2;
+            --secondary-color: #FF6B6B;
+            --success-color: #4ECDC4;
+            --warning-color: #FFE66D;
+            --danger-color: #FF6B6B;
+            --dark-bg: #1a1a1a;
+            --dark-surface: #2d2d2d;
+            --light-bg: #ffffff;
+            --light-surface: #f8f9fa;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --border-light: #e0e0e0;
+            --border-dark: #404040;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: var(--dark-bg);
+            --bg-secondary: var(--dark-surface);
+            --text-primary: var(--text-light);
+            --text-secondary: #b0b0b0;
+            --border-color: var(--border-dark);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: var(--light-bg);
+            --bg-secondary: var(--light-surface);
+            --text-primary: var(--text-dark);
+            --text-secondary: #666666;
+            --border-color: var(--border-light);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .logout-btn {
+            background: var(--danger-color);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #e74c3c;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-tab:hover {
+            color: var(--primary-color);
+            background: rgba(93, 92, 222, 0.1);
+        }
+
+        .nav-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background: rgba(93, 92, 222, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(93, 92, 222, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #45b7aa;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: var(--text-dark);
+        }
+
+        .btn-warning:hover {
+            background: #ffd93d;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e74c3c;
+        }
+
+        .btn-secondary {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-secondary);
+        }
+
+        .table th, .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: rgba(93, 92, 222, 0.05);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(93, 92, 222, 0.1);
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-expired {
+            background: #ffe6e6;
+            color: #d63031;
+        }
+
+        .status-expiring {
+            background: #fff6e6;
+            color: #e17055;
+        }
+
+        .status-low-stock {
+            background: #ffe6e6;
+            color: #d63031;
+        }
+
+        .status-in-stock {
+            background: #e6f7f1;
+            color: #00b894;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .chart-container {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Login Page */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Loading States */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                font-size: 0.9rem;
+            }
+
+            .table th, .table td {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .hidden { display: none; }
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .gap-1 { gap: 0.5rem; }
+        .gap-2 { gap: 1rem; }
+    </style>
+</head>
+<body data-theme="light">
+    <div id="app" class="app-container">
+        <!-- Login Page -->
+        <div id="loginPage" class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="login-logo">🏥</div>
+                    <h1 class="login-title">Saladin Pharma</h1>
+                    <p class="login-subtitle">Sheikh Bakri Saphalo Medium Clinic</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group mb-2">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="loginEmail" class="form-input" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="loginPassword" class="form-input" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Login
+                    </button>
+                </form>
+                <div id="loginError" class="mt-2" style="color: var(--danger-color); text-align: center; display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="mainApp" class="hidden">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="logo">🏥</div>
+                        <div>
+                            <div class="header-title">Saladin Pharma</div>
+                            <div class="header-subtitle">Sheikh Bakri Saphalo Medium Clinic</div>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button id="themeToggle" class="theme-toggle">🌙</button>
+                        <div class="user-info">
+                            <span id="currentUser"></span>
+                            <span id="userRole"></span>
+                        </div>
+                        <button id="logoutBtn" class="logout-btn">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Navigation -->
+            <nav class="nav-container">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-page="dashboard">📊 Dashboard</button>
+                    <button class="nav-tab" data-page="sales">🧾 Sales</button>
+                    <button class="nav-tab" data-page="inventory">📊 Inventory</button>
+                    <button class="nav-tab" data-page="purchases">📥 Purchases</button>
+                    <button class="nav-tab" data-page="expenses">💸 Expenses</button>
+                    <button class="nav-tab" data-page="reports">📑 Reports</button>
+                    <button class="nav-tab" data-page="logs">📚 Activity Logs</button>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Page -->
+                <div id="dashboardPage" class="page active">
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalSales">0 ETB</div>
+                            <div class="stat-label">Total Sales</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalExpenses">0 ETB</div>
+                            <div class="stat-label">Total Expenses</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="netProfit">0 ETB</div>
+                            <div class="stat-label">Net Profit</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalPatients">0</div>
+                            <div class="stat-label">Patients Served</div>
+                        </div>
+                    </div>
+
+                    <div class="filters">
+                        <select id="dashboardFilter" class="form-select">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                        <input type="date" id="dashboardDate" class="form-input">
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="incomeExpenseChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Sales Page -->
+                <div id="salesPage" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">New Sale</h2>
+                        </div>
+                        <form id="salesForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Patient MRN</label>
+                                    <input type="text" id="patientMrn" class="form-input" pattern="[0-9]{5}" required placeholder="5-digit number">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Patient Name</label>
+                                    <input type="text" id="patientName" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Age</label>
+                                    <input type="number" id="patientAge" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Sex</label>
+                                    <select id="patientSex" class="form-select" required>
+                                        <option value="">Select Sex</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Address</label>
+                                    <input type="text" id="patientAddress" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Diagnosis</label>
+                                    <input type="text" id="patientDiagnosis" class="form-input" required>
+                                </div>
+                            </div>
+
+                            <h3 class="mb-2">Prescribed Drugs</h3>
+                            <div id="drugsList">
+                                <div class="drug-item">
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label class="form-label">Drug Name</label>
+                                            <select class="form-select drug-select" required>
+                                                <option value="">Select Drug</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Dose</label>
+                                            <input type="text" class="form-input drug-dose" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Unit</label>
+                                            <input type="text" class="form-input drug-unit" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Quantity</label>
+                                            <input type="number" step="0.1" class="form-input drug-quantity" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" id="addDrugBtn" class="btn btn-secondary mb-3">Add Another Drug</button>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">Total Amount Paid (ETB)</label>
+                                <input type="number" step="0.01" id="totalPaid" class="form-input" required>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary">Complete Sale</button>
+                                <button type="button" id="clearSaleForm" class="btn btn-secondary">Clear Form</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Sales</h2>
+                        </div>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Patient</th>
+                                        <th>MRN</th>
+                                        <th>Drugs</th>
+                                        <th>Amount</th>
+                                        <th>Sold By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="salesTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Page -->
+                <div id="inventoryPage" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Drug Inventory</h2>
+                        </div>
+                        <div class="filters">
+                            <input type="text" id="inventorySearch" class="form-input" placeholder="Search drugs...">
+                            <select id="inventoryFilter" class="form-select">
+                                <option value="all">All Drugs</option>
+                                <option value="expired">Expired</option>
+                                <option value="expiring">Expiring Soon</option>
+                                <option value="low-stock">Low Stock</option>
+                            </select>
+                        </div>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Drug Name</th>
+                                        <th>Dose</th>
+                                        <th>Unit</th>
+                                        <th>Stock</th>
+                                        <th>Expiry Date</th>
+                                        <th>Supplier</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventoryTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Purchases Page -->
+                <div id="purchasesPage" class="page">
+                    <div class="card" id="purchaseFormCard">
+                        <div class="card-header">
+                            <h2 class="card-title">New Purchase</h2>
+                        </div>
+                        <form id="purchaseForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Drug Name</label>
+                                    <input type="text" id="purchaseDrugName" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Dose</label>
+                                    <input type="text" id="purchaseDose" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Unit</label>
+                                    <input type="text" id="purchaseUnit" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="number" step="0.1" id="purchaseQuantity" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Unit Price (ETB)</label>
+                                    <input type="number" step="0.01" id="purchaseUnitPrice" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Total Price (ETB)</label>
+                                    <input type="number" step="0.01" id="purchaseTotalPrice" class="form-input" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input type="date" id="purchaseExpiryDate" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Supplier</label>
+                                    <input type="text" id="purchaseSupplier" class="form-input" required>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary">Add Purchase</button>
+                                <button type="button" id="clearPurchaseForm" class="btn btn-secondary">Clear Form</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Purchase History</h2>
+                        </div>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Drug Name</th>
+                                        <th>Dose</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Price</th>
+                                        <th>Supplier</th>
+                                        <th>Expiry</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="purchasesTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expenses Page -->
+                <div id="expensesPage" class="page">
+                    <div class="card" id="expenseFormCard">
+                        <div class="card-header">
+                            <h2 class="card-title">New Expense</h2>
+                        </div>
+                        <form id="expenseForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Expense Type</label>
+                                    <select id="expenseType" class="form-select" required>
+                                        <option value="">Select Type</option>
+                                        <option value="Rent">Rent</option>
+                                        <option value="Salary">Salary</option>
+                                        <option value="Drug">Drug</option>
+                                        <option value="Equipment">Equipment</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Amount (ETB)</label>
+                                    <input type="number" step="0.01" id="expenseAmount" class="form-input" required>
+                                </div>
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label class="form-label">Description</label>
+                                    <textarea id="expenseDescription" class="form-textarea" required></textarea>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary">Add Expense</button>
+                                <button type="button" id="clearExpenseForm" class="btn btn-secondary">Clear Form</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Expense History</h2>
+                        </div>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Description</th>
+                                        <th>Created By</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expensesTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Page -->
+                <div id="reportsPage" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Generate Reports</h2>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Report Type</label>
+                                <select id="reportType" class="form-select">
+                                    <option value="sales">Sales Report</option>
+                                    <option value="purchases">Purchases Report</option>
+                                    <option value="expenses">Expenses Report</option>
+                                    <option value="inventory">Inventory Report</option>
+                                    <option value="profit">Profit Report</option>
+                                    <option value="worker-performance">Worker Performance</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Period</label>
+                                <select id="reportPeriod" class="form-select">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" id="reportStartDate" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">End Date</label>
+                                <input type="date" id="reportEndDate" class="form-input">
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button id="generateReportBtn" class="btn btn-primary">Generate Report</button>
+                            <button id="exportPdfBtn" class="btn btn-success">Export PDF</button>
+                            <button id="exportCsvBtn" class="btn btn-warning">Export CSV</button>
+                        </div>
+                    </div>
+
+                    <div id="reportResults" class="card hidden">
+                        <div class="card-header">
+                            <h2 class="card-title">Report Results</h2>
+                        </div>
+                        <div id="reportContent"></div>
+                    </div>
+                </div>
+
+                <!-- Activity Logs Page -->
+                <div id="logsPage" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Activity Logs</h2>
+                        </div>
+                        <div class="filters">
+                            <select id="logFilter" class="form-select">
+                                <option value="all">All Activities</option>
+                                <option value="sales">Sales</option>
+                                <option value="purchases">Purchases</option>
+                                <option value="expenses">Expenses</option>
+                            </select>
+                            <input type="date" id="logDate" class="form-input">
+                        </div>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Action</th>
+                                        <th>Type</th>
+                                        <th>Details</th>
+                                        <th>User</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logsTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Database Setup with Dexie
+        const db = new Dexie('SaladinPharmaDB');
+        
+        db.version(1).stores({
+            users: '++id, email, password, role, name',
+            sales: '++id, mrn, patientName, patientAge, patientSex, patientAddress, diagnosis, drugs, totalPaid, soldBy, createdAt, createdBy',
+            purchases: '++id, drugName, dose, unit, quantity, unitPrice, totalPrice, expiryDate, supplier, createdAt, createdBy',
+            expenses: '++id, type, amount, description, createdAt, createdBy',
+            inventory: '++id, drugName, dose, unit, stock, expiryDate, supplier, lastUpdated',
+            logs: '++id, action, type, details, userId, createdAt'
+        });
+
+        // Global Variables
+        let currentUser = null;
+        let currentChart = null;
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', async function() {
+            await initializeDatabase();
+            setupEventListeners();
+            checkAuthentication();
+            setupServiceWorker();
+        });
+
+        // Initialize Database with default users
+        async function initializeDatabase() {
+            try {
+                const userCount = await db.users.count();
+                if (userCount === 0) {
+                    // Create default users with encrypted passwords
+                    await db.users.bulkAdd([
+                        {
+                            email: 'Saladin@pharmaclinic.com',
+                            password: CryptoJS.SHA256('Admin@Abdo1').toString(),
+                            role: 'admin',
+                            name: 'Abdulqadir Ahmed'
+                        },
+                        {
+                            email: 'Nabiya@yahoo.com',
+                            password: CryptoJS.SHA256('N123456').toString(),
+                            role: 'worker',
+                            name: 'Nabiya Worker'
+                        }
+                    ]);
+                }
+            } catch (error) {
+                console.error('Database initialization error:', error);
+            }
+        }
+
+        // Setup Service Worker
+        async function setupServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register(
+                        'data:application/javascript;base64,' + btoa(`
+                            const CACHE_NAME = 'saladin-pharma-v1';
+                            const urlsToCache = ['/'];
+                            
+                            self.addEventListener('install', event => {
+                                event.waitUntil(
+                                    caches.open(CACHE_NAME)
+                                        .then(cache => cache.addAll(urlsToCache))
+                                );
+                            });
+                            
+                            self.addEventListener('fetch', event => {
+                                event.respondWith(
+                                    caches.match(event.request)
+                                        .then(response => response || fetch(event.request))
+                                );
+                            });
+                        `)
+                    );
+                    console.log('Service Worker registered successfully');
+                } catch (error) {
+                    console.log('Service Worker registration failed:', error);
+                }
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // Navigation
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    const page = e.target.dataset.page;
+                    if (hasPermission(page)) {
+                        showPage(page);
+                    }
+                });
+            });
+
+            // Theme toggle
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+
+            // Forms
+            document.getElementById('salesForm').addEventListener('submit', handleSaleSubmit);
+            document.getElementById('purchaseForm').addEventListener('submit', handlePurchaseSubmit);
+            document.getElementById('expenseForm').addEventListener('submit', handleExpenseSubmit);
+
+            // Dynamic form calculations
+            document.getElementById('purchaseQuantity').addEventListener('input', calculateTotalPrice);
+            document.getElementById('purchaseUnitPrice').addEventListener('input', calculateTotalPrice);
+
+            // Add drug button
+            document.getElementById('addDrugBtn').addEventListener('click', addDrugItem);
+
+            // Clear form buttons
+            document.getElementById('clearSaleForm').addEventListener('click', () => clearForm('salesForm'));
+            document.getElementById('clearPurchaseForm').addEventListener('click', () => clearForm('purchaseForm'));
+            document.getElementById('clearExpenseForm').addEventListener('click', () => clearForm('expenseForm'));
+
+            // Filters
+            document.getElementById('inventorySearch').addEventListener('input', filterInventory);
+            document.getElementById('inventoryFilter').addEventListener('change', filterInventory);
+            document.getElementById('dashboardFilter').addEventListener('change', updateDashboard);
+            document.getElementById('dashboardDate').addEventListener('change', updateDashboard);
+
+            // Reports
+            document.getElementById('generateReportBtn').addEventListener('click', generateReport);
+            document.getElementById('exportPdfBtn').addEventListener('click', exportReportPDF);
+            document.getElementById('exportCsvBtn').addEventListener('click', exportReportCSV);
+        }
+
+        // Authentication
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const hashedPassword = CryptoJS.SHA256(password).toString();
+
+            try {
+                const user = await db.users.where('email').equals(email).first();
+                
+                if (user && user.password === hashedPassword) {
+                    currentUser = user;
+                    showMainApp();
+                    await logActivity('login', 'auth', `User logged in: ${user.email}`);
+                } else {
+                    showLoginError('Invalid email or password');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showLoginError('Login failed. Please try again.');
+            }
+        }
+
+        function showLoginError(message) {
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function checkAuthentication() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
+            }
+        }
+
+        function showMainApp() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            
+            // Update user info
+            document.getElementById('currentUser').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = `(${currentUser.role})`;
+            
+            // Save current user
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Setup navigation based on role
+            setupNavigation();
+            
+            // Load initial data
+            loadInitialData();
+        }
+
+        function setupNavigation() {
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                const page = tab.dataset.page;
+                if (!hasPermission(page)) {
+                    tab.style.display = 'none';
+                } else {
+                    tab.style.display = 'block';
+                }
+            });
+
+            // Show first allowed page
+            const firstAllowedTab = Array.from(navTabs).find(tab => 
+                tab.style.display !== 'none'
+            );
+            if (firstAllowedTab) {
+                showPage(firstAllowedTab.dataset.page);
+            }
+        }
+
+        function hasPermission(page) {
+            if (currentUser.role === 'admin') return true;
+            
+            // Worker permissions
+            const workerPages = ['sales', 'inventory', 'purchases', 'logs'];
+            return workerPages.includes(page);
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            
+            // Clear forms
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // Navigation
+        function showPage(pageId) {
+            // Update nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.page === pageId) {
+                    tab.classList.add('active');
+                }
+            });
+
+            // Update pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId + 'Page').classList.add('active');
+
+            // Load page-specific data
+            loadPageData(pageId);
+        }
+
+        async function loadPageData(pageId) {
+            switch(pageId) {
+                case 'dashboard':
+                    await updateDashboard();
+                    break;
+                case 'sales':
+                    await loadSalesData();
+                    await loadDrugOptions();
+                    break;
+                case 'inventory':
+                    await loadInventoryData();
+                    break;
+                case 'purchases':
+                    await loadPurchasesData();
+                    break;
+                case 'expenses':
+                    await loadExpensesData();
+                    break;
+                case 'logs':
+                    await loadLogsData();
+                    break;
+            }
+        }
+
+        async function loadInitialData() {
+            await updateDashboard();
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (body.dataset.theme === 'light') {
+                body.dataset.theme = 'dark';
+                themeToggle.textContent = '☀️';
+            } else {
+                body.dataset.theme = 'light';
+                themeToggle.textContent = '🌙';
+            }
+            
+            localStorage.setItem('theme', body.dataset.theme);
+        }
+
+        // Initialize theme from localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.dataset.theme = savedTheme;
+        document.getElementById('themeToggle').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+        // Sales Functions
+        async function handleSaleSubmit(e) {
+            e.preventDefault();
+            
+            const saleData = {
+                mrn: document.getElementById('patientMrn').value,
+                patientName: document.getElementById('patientName').value,
+                patientAge: parseInt(document.getElementById('patientAge').value),
+                patientSex: document.getElementById('patientSex').value,
+                patientAddress: document.getElementById('patientAddress').value,
+                diagnosis: document.getElementById('patientDiagnosis').value,
+                drugs: [],
+                totalPaid: parseFloat(document.getElementById('totalPaid').value),
+                soldBy: currentUser.name,
+                createdAt: new Date(),
+                createdBy: currentUser.id
+            };
+
+            // Collect drugs data
+            const drugItems = document.querySelectorAll('.drug-item');
+            for (const item of drugItems) {
+                const drugName = item.querySelector('.drug-select').value;
+                const dose = item.querySelector('.drug-dose').value;
+                const unit = item.querySelector('.drug-unit').value;
+                const quantity = parseFloat(item.querySelector('.drug-quantity').value);
+
+                if (drugName && dose && unit && quantity) {
+                    // Check if drug is available
+                    const available = await checkDrugAvailability(drugName, dose, unit, quantity);
+                    if (!available) {
+                        alert(`Drug ${drugName} ${dose} ${unit} is not available in sufficient quantity or is expired.`);
+                        return;
+                    }
+
+                    saleData.drugs.push({ drugName, dose, unit, quantity });
+                }
+            }
+
+            if (saleData.drugs.length === 0) {
+                alert('Please add at least one drug to the sale.');
+                return;
+            }
+
+            try {
+                // Add sale
+                await db.sales.add(saleData);
+                
+                // Update inventory
+                await updateInventoryAfterSale(saleData.drugs);
+                
+                // Log activity
+                await logActivity('create', 'sales', `Sale created for patient: ${saleData.patientName} (MRN: ${saleData.mrn})`);
+                
+                alert('Sale completed successfully!');
+                document.getElementById('salesForm').reset();
+                await loadSalesData();
+                await loadInventoryData();
+                
+            } catch (error) {
+                console.error('Sale error:', error);
+                alert('Failed to complete sale. Please try again.');
+            }
+        }
+
+        async function checkDrugAvailability(drugName, dose, unit, quantity) {
+            const inventory = await db.inventory
+                .where('drugName').equals(drugName)
+                .and(item => item.dose === dose && item.unit === unit)
+                .first();
+
+            if (!inventory) return false;
+            
+            // Check expiry
+            const today = new Date();
+            const expiryDate = new Date(inventory.expiryDate);
+            if (expiryDate <= today) return false;
+            
+            // Check stock
+            return inventory.stock >= quantity;
+        }
+
+        async function updateInventoryAfterSale(drugs) {
+            for (const drug of drugs) {
+                const inventory = await db.inventory
+                    .where('drugName').equals(drug.drugName)
+                    .and(item => item.dose === drug.dose && item.unit === drug.unit)
+                    .first();
+
+                if (inventory) {
+                    const newStock = inventory.stock - drug.quantity;
+                    await db.inventory.update(inventory.id, { 
+                        stock: newStock,
+                        lastUpdated: new Date()
+                    });
+                }
+            }
+        }
+
+        async function loadDrugOptions() {
+            const inventory = await db.inventory.where('stock').above(0).toArray();
+            const drugSelects = document.querySelectorAll('.drug-select');
+            
+            drugSelects.forEach(select => {
+                select.innerHTML = '<option value="">Select Drug</option>';
+                inventory.forEach(item => {
+                    if (item.stock > 0 && new Date(item.expiryDate) > new Date()) {
+                        const option = document.createElement('option');
+                        option.value = item.drugName;
+                        option.textContent = `${item.drugName} ${item.dose} ${item.unit} (Stock: ${item.stock})`;
+                        option.dataset.dose = item.dose;
+                        option.dataset.unit = item.unit;
+                        select.appendChild(option);
+                    }
+                });
+            });
+
+            // Add event listeners for auto-fill
+            drugSelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    if (selectedOption.dataset.dose) {
+                        const drugItem = this.closest('.drug-item');
+                        drugItem.querySelector('.drug-dose').value = selectedOption.dataset.dose;
+                        drugItem.querySelector('.drug-unit').value = selectedOption.dataset.unit;
+                    }
+                });
+            });
+        }
+
+        function addDrugItem() {
+            const drugsList = document.getElementById('drugsList');
+            const newItem = document.createElement('div');
+            newItem.className = 'drug-item';
+            newItem.innerHTML = `
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Drug Name</label>
+                        <select class="form-select drug-select" required>
+                            <option value="">Select Drug</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dose</label>
+                        <input type="text" class="form-input drug-dose" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unit</label>
+                        <input type="text" class="form-input drug-unit" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" step="0.1" class="form-input drug-quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger remove-drug" style="margin-top: 1.5rem;">Remove</button>
+                    </div>
+                </div>
+            `;
+            
+            drugsList.appendChild(newItem);
+            
+            // Add remove functionality
+            newItem.querySelector('.remove-drug').addEventListener('click', function() {
+                newItem.remove();
+            });
+            
+            loadDrugOptions();
+        }
+
+        async function loadSalesData() {
+            let sales;
+            if (currentUser.role === 'worker') {
+                sales = await db.sales.where('createdBy').equals(currentUser.id).reverse().limit(50).toArray();
+            } else {
+                sales = await db.sales.orderBy('createdAt').reverse().limit(50).toArray();
+            }
+
+            const tbody = document.getElementById('salesTableBody');
+            tbody.innerHTML = '';
+
+            sales.forEach(sale => {
+                const row = document.createElement('tr');
+                const drugsText = sale.drugs.map(d => `${d.drugName} (${d.quantity})`).join(', ');
+                
+                row.innerHTML = `
+                    <td>${new Date(sale.createdAt).toLocaleDateString()}</td>
+                    <td>${sale.patientName}</td>
+                    <td>${sale.mrn}</td>
+                    <td title="${drugsText}">${drugsText.length > 50 ? drugsText.substring(0, 50) + '...' : drugsText}</td>
+                    <td>${sale.totalPaid.toFixed(2)} ETB</td>
+                    <td>${sale.soldBy}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Purchases Functions
+        async function handlePurchaseSubmit(e) {
+            e.preventDefault();
+            
+            if (currentUser.role !== 'admin') {
+                alert('Only administrators can add purchases.');
+                return;
+            }
+
+            const purchaseData = {
+                drugName: document.getElementById('purchaseDrugName').value,
+                dose: document.getElementById('purchaseDose').value,
+                unit: document.getElementById('purchaseUnit').value,
+                quantity: parseFloat(document.getElementById('purchaseQuantity').value),
+                unitPrice: parseFloat(document.getElementById('purchaseUnitPrice').value),
+                totalPrice: parseFloat(document.getElementById('purchaseTotalPrice').value),
+                expiryDate: document.getElementById('purchaseExpiryDate').value,
+                supplier: document.getElementById('purchaseSupplier').value,
+                createdAt: new Date(),
+                createdBy: currentUser.id
+            };
+
+            try {
+                // Add purchase
+                await db.purchases.add(purchaseData);
+                
+                // Update inventory
+                await updateInventoryAfterPurchase(purchaseData);
+                
+                // Log activity
+                await logActivity('create', 'purchases', `Purchase added: ${purchaseData.drugName} ${purchaseData.dose} ${purchaseData.unit}`);
+                
+                alert('Purchase added successfully!');
+                document.getElementById('purchaseForm').reset();
+                await loadPurchasesData();
+                await loadInventoryData();
+                
+            } catch (error) {
+                console.error('Purchase error:', error);
+                alert('Failed to add purchase. Please try again.');
+            }
+        }
+
+        async function updateInventoryAfterPurchase(purchase) {
+            const existing = await db.inventory
+                .where('drugName').equals(purchase.drugName)
+                .and(item => item.dose === purchase.dose && item.unit === purchase.unit && item.supplier === purchase.supplier)
+                .first();
+
+            if (existing) {
+                // Update existing inventory
+                const newStock = existing.stock + purchase.quantity;
+                await db.inventory.update(existing.id, { 
+                    stock: newStock,
+                    lastUpdated: new Date()
+                });
+            } else {
+                // Create new inventory item
+                await db.inventory.add({
+                    drugName: purchase.drugName,
+                    dose: purchase.dose,
+                    unit: purchase.unit,
+                    stock: purchase.quantity,
+                    expiryDate: purchase.expiryDate,
+                    supplier: purchase.supplier,
+                    lastUpdated: new Date()
+                });
+            }
+        }
+
+        function calculateTotalPrice() {
+            const quantity = parseFloat(document.getElementById('purchaseQuantity').value) || 0;
+            const unitPrice = parseFloat(document.getElementById('purchaseUnitPrice').value) || 0;
+            const totalPrice = quantity * unitPrice;
+            document.getElementById('purchaseTotalPrice').value = totalPrice.toFixed(2);
+        }
+
+        async function loadPurchasesData() {
+            const purchases = await db.purchases.orderBy('createdAt').reverse().limit(50).toArray();
+            const tbody = document.getElementById('purchasesTableBody');
+            tbody.innerHTML = '';
+
+            purchases.forEach(purchase => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(purchase.createdAt).toLocaleDateString()}</td>
+                    <td>${purchase.drugName}</td>
+                    <td>${purchase.dose}</td>
+                    <td>${purchase.quantity}</td>
+                    <td>${purchase.unitPrice.toFixed(2)} ETB</td>
+                    <td>${purchase.totalPrice.toFixed(2)} ETB</td>
+                    <td>${purchase.supplier}</td>
+                    <td>${new Date(purchase.expiryDate).toLocaleDateString()}</td>
+                    <td>
+                        ${currentUser.role === 'admin' ? 
+                            `<button class="btn btn-danger btn-sm" onclick="deletePurchase(${purchase.id})">Delete</button>` 
+                            : 'Read Only'
+                        }
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function deletePurchase(id) {
+            if (currentUser.role !== 'admin') return;
+            
+            if (confirm('Are you sure you want to delete this purchase? This will affect inventory levels.')) {
+                try {
+                    const purchase = await db.purchases.get(id);
+                    await db.purchases.delete(id);
+                    
+                    // Update inventory (reduce stock)
+                    const inventory = await db.inventory
+                        .where('drugName').equals(purchase.drugName)
+                        .and(item => item.dose === purchase.dose && item.unit === purchase.unit)
+                        .first();
+
+                    if (inventory) {
+                        const newStock = Math.max(0, inventory.stock - purchase.quantity);
+                        await db.inventory.update(inventory.id, { 
+                            stock: newStock,
+                            lastUpdated: new Date()
+                        });
+                    }
+                    
+                    await logActivity('delete', 'purchases', `Purchase deleted: ${purchase.drugName}`);
+                    await loadPurchasesData();
+                    await loadInventoryData();
+                    
+                } catch (error) {
+                    console.error('Delete purchase error:', error);
+                    alert('Failed to delete purchase.');
+                }
+            }
+        }
+
+        // Inventory Functions
+        async function loadInventoryData() {
+            const inventory = await db.inventory.toArray();
+            const tbody = document.getElementById('inventoryTableBody');
+            tbody.innerHTML = '';
+
+            inventory.forEach(item => {
+                const row = document.createElement('tr');
+                const status = getInventoryStatus(item);
+                const statusBadge = getStatusBadge(status);
+                
+                row.innerHTML = `
+                    <td>${item.drugName}</td>
+                    <td>${item.dose}</td>
+                    <td>${item.unit}</td>
+                    <td>${item.stock}</td>
+                    <td>${new Date(item.expiryDate).toLocaleDateString()}</td>
+                    <td>${item.supplier}</td>
+                    <td>${statusBadge}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function getInventoryStatus(item) {
+            const today = new Date();
+            const expiryDate = new Date(item.expiryDate);
+            const daysUntilExpiry = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+
+            if (expiryDate <= today) return 'expired';
+            if (daysUntilExpiry <= 30) return 'expiring';
+            if (item.stock < 5) return 'low-stock';
+            return 'in-stock';
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'expired': '<span class="status-badge status-expired">🔴 Expired</span>',
+                'expiring': '<span class="status-badge status-expiring">🟡 Expiring Soon</span>',
+                'low-stock': '<span class="status-badge status-low-stock">⚠️ Low Stock</span>',
+                'in-stock': '<span class="status-badge status-in-stock">✅ In Stock</span>'
+            };
+            return badges[status] || badges['in-stock'];
+        }
+
+        function filterInventory() {
+            const search = document.getElementById('inventorySearch').value.toLowerCase();
+            const filter = document.getElementById('inventoryFilter').value;
+            const rows = document.querySelectorAll('#inventoryTableBody tr');
+
+            rows.forEach(row => {
+                const drugName = row.children[0].textContent.toLowerCase();
+                const statusElement = row.children[6];
+                
+                let matchesSearch = drugName.includes(search);
+                let matchesFilter = true;
+
+                if (filter !== 'all') {
+                    const statusClass = statusElement.querySelector('.status-badge').className;
+                    matchesFilter = statusClass.includes(filter);
+                }
+
+                row.style.display = (matchesSearch && matchesFilter) ? '' : 'none';
+            });
+        }
+
+        // Expenses Functions
+        async function handleExpenseSubmit(e) {
+            e.preventDefault();
+            
+            if (currentUser.role !== 'admin') {
+                alert('Only administrators can add expenses.');
+                return;
+            }
+
+            const expenseData = {
+                type: document.getElementById('expenseType').value,
+                amount: parseFloat(document.getElementById('expenseAmount').value),
+                description: document.getElementById('expenseDescription').value,
+                createdAt: new Date(),
+                createdBy: currentUser.id
+            };
+
+            try {
+                await db.expenses.add(expenseData);
+                await logActivity('create', 'expenses', `Expense added: ${expenseData.type} - ${expenseData.amount} ETB`);
+                
+                alert('Expense added successfully!');
+                document.getElementById('expenseForm').reset();
+                await loadExpensesData();
+                await updateDashboard();
+                
+            } catch (error) {
+                console.error('Expense error:', error);
+                alert('Failed to add expense. Please try again.');
+            }
+        }
+
+        async function loadExpensesData() {
+            if (currentUser.role !== 'admin') return;
+            
+            const expenses = await db.expenses.orderBy('createdAt').reverse().limit(50).toArray();
+            const tbody = document.getElementById('expensesTableBody');
+            tbody.innerHTML = '';
+
+            for (const expense of expenses) {
+                const user = await db.users.get(expense.createdBy);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(expense.createdAt).toLocaleDateString()}</td>
+                    <td>${expense.type}</td>
+                    <td>${expense.amount.toFixed(2)} ETB</td>
+                    <td title="${expense.description}">${expense.description.length > 50 ? expense.description.substring(0, 50) + '...' : expense.description}</td>
+                    <td>${user ? user.name : 'Unknown'}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteExpense(${expense.id})">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        async function deleteExpense(id) {
+            if (currentUser.role !== 'admin') return;
+            
+            if (confirm('Are you sure you want to delete this expense?')) {
+                try {
+                    const expense = await db.expenses.get(id);
+                    await db.expenses.delete(id);
+                    await logActivity('delete', 'expenses', `Expense deleted: ${expense.type} - ${expense.amount} ETB`);
+                    await loadExpensesData();
+                    await updateDashboard();
+                } catch (error) {
+                    console.error('Delete expense error:', error);
+                    alert('Failed to delete expense.');
+                }
+            }
+        }
+
+        // Dashboard Functions
+        async function updateDashboard() {
+            if (currentUser.role !== 'admin') return;
+
+            const filter = document.getElementById('dashboardFilter').value;
+            const selectedDate = document.getElementById('dashboardDate').value;
+            
+            // Set default date to today if not selected
+            if (!selectedDate) {
+                document.getElementById('dashboardDate').value = new Date().toISOString().split('T')[0];
+            }
+
+            const dateRange = getDateRange(filter, selectedDate || new Date().toISOString().split('T')[0]);
+            
+            try {
+                // Get sales data
+                const sales = await db.sales
+                    .where('createdAt')
+                    .between(dateRange.start, dateRange.end)
+                    .toArray();
+                
+                // Get expenses data
+                const expenses = await db.expenses
+                    .where('createdAt')
+                    .between(dateRange.start, dateRange.end)
+                    .toArray();
+
+                // Calculate totals
+                const totalSales = sales.reduce((sum, sale) => sum + sale.totalPaid, 0);
+                const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+                const netProfit = totalSales - totalExpenses;
+                const totalPatients = sales.length;
+
+                // Update stat cards
+                document.getElementById('totalSales').textContent = totalSales.toFixed(2) + ' ETB';
+                document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2) + ' ETB';
+                document.getElementById('netProfit').textContent = netProfit.toFixed(2) + ' ETB';
+                document.getElementById('totalPatients').textContent = totalPatients;
+
+                // Update chart
+                updateIncomeExpenseChart(sales, expenses, filter);
+
+            } catch (error) {
+                console.error('Dashboard update error:', error);
+            }
+        }
+
+        function getDateRange(filter, selectedDate) {
+            const date = new Date(selectedDate);
+            let start, end;
+
+            switch (filter) {
+                case 'daily':
+                    start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                    end = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+                    break;
+                case 'weekly':
+                    const startOfWeek = new Date(date);
+                    startOfWeek.setDate(date.getDate() - date.getDay());
+                    start = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate());
+                    end = new Date(start.getTime() + 7 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'monthly':
+                    start = new Date(date.getFullYear(), date.getMonth(), 1);
+                    end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+                    break;
+                case 'yearly':
+                    start = new Date(date.getFullYear(), 0, 1);
+                    end = new Date(date.getFullYear() + 1, 0, 1);
+                    break;
+                default:
+                    start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                    end = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+            }
+
+            return { start, end };
+        }
+
+        function updateIncomeExpenseChart(sales, expenses, filter) {
+            const ctx = document.getElementById('incomeExpenseChart').getContext('2d');
+            
+            // Destroy existing chart
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            // Prepare data based on filter
+            const { labels, salesData, expensesData } = prepareChartData(sales, expenses, filter);
+
+            currentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Sales (ETB)',
+                            data: salesData,
+                            backgroundColor: 'rgba(93, 92, 222, 0.8)',
+                            borderColor: 'rgba(93, 92, 222, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Expenses (ETB)',
+                            data: expensesData,
+                            backgroundColor: 'rgba(255, 107, 107, 0.8)',
+                            borderColor: 'rgba(255, 107, 107, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Income vs Expenses'
+                        },
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toFixed(0) + ' ETB';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function prepareChartData(sales, expenses, filter) {
+            let labels = [];
+            let salesData = [];
+            let expensesData = [];
+
+            if (filter === 'daily') {
+                // Group by hour
+                for (let hour = 0; hour < 24; hour++) {
+                    labels.push(`${hour}:00`);
+                    
+                    const hourSales = sales.filter(sale => 
+                        new Date(sale.createdAt).getHours() === hour
+                    ).reduce((sum, sale) => sum + sale.totalPaid, 0);
+                    
+                    const hourExpenses = expenses.filter(expense => 
+                        new Date(expense.createdAt).getHours() === hour
+                    ).reduce((sum, expense) => sum + expense.amount, 0);
+                    
+                    salesData.push(hourSales);
+                    expensesData.push(hourExpenses);
+                }
+            } else if (filter === 'weekly') {
+                // Group by day of week
+                const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                for (let day = 0; day < 7; day++) {
+                    labels.push(dayNames[day]);
+                    
+                    const daySales = sales.filter(sale => 
+                        new Date(sale.createdAt).getDay() === day
+                    ).reduce((sum, sale) => sum + sale.totalPaid, 0);
+                    
+                    const dayExpenses = expenses.filter(expense => 
+                        new Date(expense.createdAt).getDay() === day
+                    ).reduce((sum, expense) => sum + expense.amount, 0);
+                    
+                    salesData.push(daySales);
+                    expensesData.push(dayExpenses);
+                }
+            } else {
+                // Simple totals
+                labels = ['Total'];
+                salesData = [sales.reduce((sum, sale) => sum + sale.totalPaid, 0)];
+                expensesData = [expenses.reduce((sum, expense) => sum + expense.amount, 0)];
+            }
+
+            return { labels, salesData, expensesData };
+        }
+
+        // Activity Logs
+        async function logActivity(action, type, details) {
+            try {
+                await db.logs.add({
+                    action,
+                    type,
+                    details,
+                    userId: currentUser.id,
+                    createdAt: new Date()
+                });
+            } catch (error) {
+                console.error('Log activity error:', error);
+            }
+        }
+
+        async function loadLogsData() {
+            let logs;
+            if (currentUser.role === 'worker') {
+                // Workers can only see their own logs
+                logs = await db.logs.where('userId').equals(currentUser.id).reverse().limit(100).toArray();
+            } else {
+                logs = await db.logs.orderBy('createdAt').reverse().limit(100).toArray();
+            }
+
+            const tbody = document.getElementById('logsTableBody');
+            tbody.innerHTML = '';
+
+            for (const log of logs) {
+                const user = await db.users.get(log.userId);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(log.createdAt).toLocaleString()}</td>
+                    <td>${log.action}</td>
+                    <td>${log.type}</td>
+                    <td title="${log.details}">${log.details.length > 50 ? log.details.substring(0, 50) + '...' : log.details}</td>
+                    <td>${user ? user.name : 'Unknown'}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        // Reports Functions
+        async function generateReport() {
+            if (currentUser.role !== 'admin') {
+                alert('Only administrators can generate reports.');
+                return;
+            }
+
+            const reportType = document.getElementById('reportType').value;
+            const period = document.getElementById('reportPeriod').value;
+            const startDate = document.getElementById('reportStartDate').value;
+            const endDate = document.getElementById('reportEndDate').value;
+
+            let dateRange;
+            if (period === 'custom' && startDate && endDate) {
+                dateRange = {
+                    start: new Date(startDate),
+                    end: new Date(endDate + 'T23:59:59')
+                };
+            } else {
+                const today = new Date();
+                dateRange = getDateRange(period, today.toISOString().split('T')[0]);
+            }
+
+            try {
+                let reportData;
+                let reportHtml = '';
+
+                switch (reportType) {
+                    case 'sales':
+                        reportData = await db.sales
+                            .where('createdAt')
+                            .between(dateRange.start, dateRange.end)
+                            .toArray();
+                        reportHtml = generateSalesReport(reportData, period);
+                        break;
+                    case 'purchases':
+                        reportData = await db.purchases
+                            .where('createdAt')
+                            .between(dateRange.start, dateRange.end)
+                            .toArray();
+                        reportHtml = generatePurchasesReport(reportData, period);
+                        break;
+                    case 'expenses':
+                        reportData = await db.expenses
+                            .where('createdAt')
+                            .between(dateRange.start, dateRange.end)
+                            .toArray();
+                        reportHtml = generateExpensesReport(reportData, period);
+                        break;
+                    case 'inventory':
+                        reportData = await db.inventory.toArray();
+                        reportHtml = generateInventoryReport(reportData);
+                        break;
+                    case 'profit':
+                        const salesData = await db.sales
+                            .where('createdAt')
+                            .between(dateRange.start, dateRange.end)
+                            .toArray();
+                        const expensesData = await db.expenses
+                            .where('createdAt')
+                            .between(dateRange.start, dateRange.end)
+                            .toArray();
+                        reportHtml = generateProfitReport(salesData, expensesData, period);
+                        break;
+                    case 'worker-performance':
+                        const allSales = await db.sales
+                            .where('createdAt')
+                            .between(dateRange.start, dateRange.end)
+                            .toArray();
+                        reportHtml = generateWorkerPerformanceReport(allSales, period);
+                        break;
+                }
+
+                document.getElementById('reportResults').classList.remove('hidden');
+                document.getElementById('reportContent').innerHTML = reportHtml;
+
+            } catch (error) {
+                console.error('Report generation error:', error);
+                alert('Failed to generate report. Please try again.');
+            }
+        }
+
+        function generateSalesReport(sales, period) {
+            const totalAmount = sales.reduce((sum, sale) => sum + sale.totalPaid, 0);
+            const totalPatients = sales.length;
+
+            let html = `
+                <div class="report-header">
+                    <h3>Sales Report - ${period.charAt(0).toUpperCase() + period.slice(1)}</h3>
+                    <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                    <div class="report-summary">
+                        <p><strong>Total Sales:</strong> ${totalAmount.toFixed(2)} ETB</p>
+                        <p><strong>Total Patients:</strong> ${totalPatients}</p>
+                        <p><strong>Average Sale:</strong> ${totalPatients > 0 ? (totalAmount / totalPatients).toFixed(2) : '0.00'} ETB</p>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Patient</th>
+                                <th>MRN</th>
+                                <th>Diagnosis</th>
+                                <th>Drugs</th>
+                                <th>Amount</th>
+                                <th>Sold By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            sales.forEach(sale => {
+                const drugsText = sale.drugs.map(d => `${d.drugName} (${d.quantity})`).join(', ');
+                html += `
+                    <tr>
+                        <td>${new Date(sale.createdAt).toLocaleDateString()}</td>
+                        <td>${sale.patientName}</td>
+                        <td>${sale.mrn}</td>
+                        <td>${sale.diagnosis}</td>
+                        <td>${drugsText}</td>
+                        <td>${sale.totalPaid.toFixed(2)} ETB</td>
+                        <td>${sale.soldBy}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function generatePurchasesReport(purchases, period) {
+            const totalAmount = purchases.reduce((sum, purchase) => sum + purchase.totalPrice, 0);
+            const totalItems = purchases.length;
+
+            let html = `
+                <div class="report-header">
+                    <h3>Purchases Report - ${period.charAt(0).toUpperCase() + period.slice(1)}</h3>
+                    <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                    <div class="report-summary">
+                        <p><strong>Total Purchases:</strong> ${totalAmount.toFixed(2)} ETB</p>
+                        <p><strong>Total Items:</strong> ${totalItems}</p>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Drug Name</th>
+                                <th>Dose</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total Price</th>
+                                <th>Supplier</th>
+                                <th>Expiry Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            purchases.forEach(purchase => {
+                html += `
+                    <tr>
+                        <td>${new Date(purchase.createdAt).toLocaleDateString()}</td>
+                        <td>${purchase.drugName}</td>
+                        <td>${purchase.dose}</td>
+                        <td>${purchase.quantity}</td>
+                        <td>${purchase.unitPrice.toFixed(2)} ETB</td>
+                        <td>${purchase.totalPrice.toFixed(2)} ETB</td>
+                        <td>${purchase.supplier}</td>
+                        <td>${new Date(purchase.expiryDate).toLocaleDateString()}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function generateInventoryReport(inventory) {
+            let html = `
+                <div class="report-header">
+                    <h3>Inventory Report</h3>
+                    <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Drug Name</th>
+                                <th>Dose</th>
+                                <th>Unit</th>
+                                <th>Stock</th>
+                                <th>Expiry Date</th>
+                                <th>Supplier</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            inventory.forEach(item => {
+                const status = getInventoryStatus(item);
+                html += `
+                    <tr>
+                        <td>${item.drugName}</td>
+                        <td>${item.dose}</td>
+                        <td>${item.unit}</td>
+                        <td>${item.stock}</td>
+                        <td>${new Date(item.expiryDate).toLocaleDateString()}</td>
+                        <td>${item.supplier}</td>
+                        <td>${status}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function generateProfitReport(sales, expenses, period) {
+            const totalSales = sales.reduce((sum, sale) => sum + sale.totalPaid, 0);
+            const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            const netProfit = totalSales - totalExpenses;
+
+            let html = `
+                <div class="report-header">
+                    <h3>Profit Report - ${period.charAt(0).toUpperCase() + period.slice(1)}</h3>
+                    <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                    <div class="report-summary">
+                        <p><strong>Total Income:</strong> ${totalSales.toFixed(2)} ETB</p>
+                        <p><strong>Total Expenses:</strong> ${totalExpenses.toFixed(2)} ETB</p>
+                        <p><strong>Net Profit:</strong> ${netProfit.toFixed(2)} ETB</p>
+                        <p><strong>Profit Margin:</strong> ${totalSales > 0 ? ((netProfit / totalSales) * 100).toFixed(2) : '0.00'}%</p>
+                    </div>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function generateWorkerPerformanceReport(sales, period) {
+            const workerStats = {};
+
+            sales.forEach(sale => {
+                if (!workerStats[sale.soldBy]) {
+                    workerStats[sale.soldBy] = {
+                        salesCount: 0,
+                        totalAmount: 0,
+                        patients: new Set()
+                    };
+                }
+                workerStats[sale.soldBy].salesCount++;
+                workerStats[sale.soldBy].totalAmount += sale.totalPaid;
+                workerStats[sale.soldBy].patients.add(sale.mrn);
+            });
+
+            let html = `
+                <div class="report-header">
+                    <h3>Worker Performance Report - ${period.charAt(0).toUpperCase() + period.slice(1)}</h3>
+                    <p>Generated on: ${new Date().toLocaleDateString()}</p>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Worker Name</th>
+                                <th>Sales Count</th>
+                                <th>Total Sales</th>
+                                <th>Patients Served</th>
+                                <th>Average Sale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            Object.entries(workerStats).forEach(([worker, stats]) => {
+                const avgSale = stats.salesCount > 0 ? (stats.totalAmount / stats.salesCount).toFixed(2) : '0.00';
+                html += `
+                    <tr>
+                        <td>${worker}</td>
+                        <td>${stats.salesCount}</td>
+                        <td>${stats.totalAmount.toFixed(2)} ETB</td>
+                        <td>${stats.patients.size}</td>
+                        <td>${avgSale} ETB</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            return html;
+        }
+
+        // Export Functions
+        function exportReportPDF() {
+            const reportContent = document.getElementById('reportContent');
+            if (!reportContent.innerHTML) {
+                alert('Please generate a report first.');
+                return;
+            }
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Add header
+                doc.setFontSize(16);
+                doc.text('Saladin Pharma - Sheikh Bakri Saphalo Medium Clinic', 20, 20);
+                doc.setFontSize(12);
+                doc.text(`Report Generated: ${new Date().toLocaleDateString()}`, 20, 30);
+                
+                // Add content (simplified text extraction)
+                const textContent = reportContent.textContent;
+                const lines = doc.splitTextToSize(textContent, 170);
+                doc.text(lines, 20, 50);
+                
+                // Save PDF
+                doc.save(`saladin-pharma-report-${new Date().getTime()}.pdf`);
+                
+            } catch (error) {
+                console.error('PDF export error:', error);
+                alert('Failed to export PDF. Please try again.');
+            }
+        }
+
+        function exportReportCSV() {
+            const reportContent = document.getElementById('reportContent');
+            if (!reportContent.innerHTML) {
+                alert('Please generate a report first.');
+                return;
+            }
+
+            try {
+                const table = reportContent.querySelector('table');
+                if (!table) {
+                    alert('No table data found to export.');
+                    return;
+                }
+
+                let csv = '';
+                const rows = table.querySelectorAll('tr');
+                
+                rows.forEach(row => {
+                    const cols = row.querySelectorAll('td, th');
+                    const rowData = Array.from(cols).map(col => 
+                        `"${col.textContent.replace(/"/g, '""')}"`
+                    ).join(',');
+                    csv += rowData + '\n';
+                });
+
+                // Create and download CSV
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `saladin-pharma-report-${new Date().getTime()}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+            } catch (error) {
+                console.error('CSV export error:', error);
+                alert('Failed to export CSV. Please try again.');
+            }
+        }
+
+        // Utility Functions
+        function clearForm(formId) {
+            document.getElementById(formId).reset();
+        }
+
+        // Install PWA prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button or notification
+            const installBtn = document.createElement('button');
+            installBtn.textContent = 'Install App';
+            installBtn.className = 'btn btn-primary';
+            installBtn.style.position = 'fixed';
+            installBtn.style.bottom = '20px';
+            installBtn.style.right = '20px';
+            installBtn.style.zIndex = '1000';
+            
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    installBtn.remove();
+                }
+            });
+            
+            document.body.appendChild(installBtn);
+            
+            // Auto-remove after 10 seconds
+            setTimeout(() => {
+                if (installBtn.parentNode) {
+                    installBtn.remove();
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
