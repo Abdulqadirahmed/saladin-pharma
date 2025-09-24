@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Saladin Pharma" />
   <meta name="theme-color" content="#5D5CDE" />
-  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2FsYWRpbiBQaGFybWEiLCJzaG9ydF9uYW1lIjoiU2FsYWRpbiIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjNUQ1Q0RFIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIZHBaSFJvUFNJeE1qZ2lJR2hsYVdkb2REMGlNVEk0SWo0OGNHRjBhQ0JtYVd4c1BTSWpOVVExUTBSRklpQmtQU0p0TnpRZ05UTnpNakEyTWpKc05UWnlNalF0TlRaeU1qUXROVFp5TWpSNmJUWXhNams2T1RaQk1Ua3lNVGt5TURBZ01ERXdJaUF2UGp3dmMzWm5QZz09IiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJzaXplcyI6IjEyOHgxMjgifV19" />
+  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2FsYWRpbiBQaGFybWEiLCJzaG9ydF9uYW1lIjoiU2FsYWRpbiIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjNUQ1Q0RFIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3g1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIZHBaSFJvUFNJeE1qZ2lJR2hsYVdkb2REMGlNVEk0SWo0OGNHRjBhQ0JtYVd4c1BTSWpOVVExUTBSRklpQmtQU0p0TnpRZ05UTnpNakEyTWpKc05UWnlNalF0TlRaeU1qUXROVFp5TWpSNmJUWXhNams2T1RaQk1Ua3lNVGt5TURBZ01ERXdJaUF2UGp3dmMzWm5QZz09IiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJzaXplcyI6IjEyOHgxMjgifV19" />
   <link
     rel="icon"
     href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNhbGFkaW4gUGhhcm1hIj48Y2lyY2xlIGN4PSI2NCIgY3k9IjY0IiByPSI2MCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjY0IiB5PSI3MiIgZm9udC1zaXplPSI2MCIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TPC90ZXh0Pjwvc3ZnPg=="
@@ -437,9 +437,9 @@
           <button class="nav-btn admin-only" data-section="purchases" role="tab" aria-selected="false">📥 Purchases</button>
           <button class="nav-btn" data-section="inventory" role="tab" aria-selected="false">📦 Inventory</button>
           <button class="nav-btn admin-only" data-section="expenses" role="tab" aria-selected="false">💸 Expenses</button>
-          <button class="nav-btn admin-only" data-section="reports" role="tab" aria-selected="false">📊 Reports</button>
+          <button class="nav-btn admin-only" data-section="reports" role="tab" aria-selected="false">📈 Reports</button>
           <button class="nav-btn" data-section="backup" role="tab" aria-selected="false">💾 Backup</button>
-          <button class="nav-btn admin-only" data-section="logs" role="tab" aria-selected="false">📋 Logs</button>
+          <button class="nav-btn admin-only" data-section="logs" role="tab" aria-selected="false">📜 Logs</button>
         </div>
       </div>
     </nav>
@@ -519,9 +519,9 @@
             <h3 class="text-lg font-extrabold text-gray-900 dark:text-white mb-4">Financial Overview</h3>
             <div class="chart-container"><canvas id="incomeExpenseChart" aria-label="Income vs Expenses" role="img"></canvas></div>
           </div>
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm" role="region" aria-label="Weekly Sales Trend">
-            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white mb-4">Weekly Sales Trend</h3>
-            <div class="chart-container"><canvas id="salesTrendChart" aria-label="Sales Trend Line Chart" role="img"></canvas></div>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm" role="region" aria-label="Monthly Sales Progress">
+            <h3 class="text-lg font-extrabold text-gray-900 dark:text-white mb-4">Monthly Sale Progress</h3>
+            <div class="chart-container"><canvas id="salesTrendChart" aria-label="Monthly Sales Progress Chart" role="img"></canvas></div>
           </div>
         </div>
       </section>
@@ -753,7 +753,7 @@
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
             <h3 id="reportTitle" class="text-xl font-extrabold text-gray-900 dark:text-white"></h3>
             <div class="flex gap-2 flex-wrap">
-              <button id="reportDateRangeBtn" class="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-4 py-2 rounded-lg font-extrabold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">🗓️ Date Range</button>
+              <button id="reportDateRangeBtn" class="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-4 py-2 rounded-lg font-extrabold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">📅 Date Range</button>
               <button id="exportPdfBtn" class="bg-danger text-white px-4 py-2 rounded-lg font-extrabold hover:bg-red-600 transition-colors duration-200">📄 Export PDF</button>
               <button id="exportCsvBtn" class="bg-accent text-white px-4 py-2 rounded-lg font-extrabold hover:bg-green-600 transition-colors duration-200">📊 Export CSV</button>
             </div>
@@ -893,7 +893,7 @@
             </table>
           </div>
           <div id="logsEmptyState" class="empty-state hidden">
-            <div class="icon">📋</div>
+            <div class="icon">📜</div>
             <p>No logs yet.</p>
           </div>
         </div>
@@ -1332,7 +1332,7 @@
 
     // -------------- Dexie DB with enhanced sync queue --------------
     const localDB = new Dexie('SaladinPharmaDB');
-    localDB.version(9).stores({
+    localDB.version(10).stores({
       users: '++id, email, role, uuid, cachedCredentials, lastLogin, remoteId',
       patients: '++id, mrn, name, age, sex, address, diagnosis, lastVisit, remoteId, updatedAt',
       drugs: '++id, name, dose, unit, remoteId, updatedAt',
@@ -1930,50 +1930,70 @@
       } catch { return 0; }
     };
 
-    // -------------- Inventory mutations --------------
+    // -------------- Enhanced Inventory mutations with proper error handling --------------
     const updateInventoryFromPurchase = async (purchase, isEdit=false, oldPurchase=null) => {
       try {
+        // First, handle reverting old purchase if this is an edit
         if (isEdit && oldPurchase) {
-          const oldInv = await localDB.inventory
-            .where('drugName').equals(oldPurchase.drugName)
-            .and(i => i.dose === oldPurchase.dose && i.unit === oldPurchase.unit)
-            .first();
-          if (oldInv) {
-            const newStock = Math.max(0, Number(oldInv.totalStock) - Number(oldPurchase.quantity));
-            await localDB.inventory.update(oldInv.id, { totalStock: newStock, lastUpdated: new Date(), updatedAt: nowIso() });
-            await queueSync('inventory', 'upsert', { ...oldInv, totalStock: newStock, updatedAt: nowIso(), localTableId: oldInv.id });
-          }
+          await revertInventoryFromPurchase(oldPurchase);
         }
+
+        // Now handle the new/updated purchase
+        const drugName = purchase.drugName || purchase.drug_name;
+        const expiryDate = purchase.expiryDate || purchase.expiry_date;
+        
+        if (!drugName || !purchase.dose || !purchase.unit) {
+          throw new Error('Missing required drug information');
+        }
+        
+        // Find existing inventory item with exact match
         const existing = await localDB.inventory
-          .where('drugName').equals(purchase.drugName || purchase.drug_name)
+          .where('drugName').equals(drugName)
           .and(i => i.dose === purchase.dose && i.unit === purchase.unit)
           .first();
+          
         if (existing) {
+          // Update existing inventory entry
           const updated = {
             totalStock: Number(existing.totalStock) + Number(purchase.quantity || 0),
-            supplier: purchase.supplier,
-            expiryDate: purchase.expiryDate || purchase.expiry_date,
+            supplier: purchase.supplier || existing.supplier, // Keep existing if not provided
+            expiryDate: expiryDate || existing.expiryDate,
             lastUpdated: new Date(),
             updatedAt: nowIso()
           };
+          
+          // If we have a newer expiry date, use it
+          if (expiryDate && new Date(expiryDate) > new Date(existing.expiryDate || 0)) {
+            updated.expiryDate = expiryDate;
+          }
+          
           await localDB.inventory.update(existing.id, updated);
           await queueSync('inventory', 'upsert', { ...existing, ...updated, localTableId: existing.id });
+          
+          console.log(`Updated inventory: ${drugName} - New stock: ${updated.totalStock}`);
         } else {
+          // Create new inventory entry
           const inv = {
-            drugName: purchase.drugName || purchase.drug_name,
+            drugName: drugName,
             dose: purchase.dose,
             unit: purchase.unit,
             totalStock: Number(purchase.quantity || 0),
-            supplier: purchase.supplier,
-            expiryDate: purchase.expiryDate || purchase.expiry_date,
+            supplier: purchase.supplier || 'Unknown',
+            expiryDate: expiryDate || new Date(Date.now() + 365*24*60*60*1000).toISOString(), // Default 1 year
             lastUpdated: new Date(),
             updatedAt: nowIso()
           };
           const id = await localDB.inventory.add(inv);
           await queueSync('inventory', 'upsert', { ...inv, localTableId: id });
+          
+          console.log(`Created new inventory: ${drugName} - Stock: ${inv.totalStock}`);
         }
+        
         await triggerDataSync(['inventory', 'dashboard']);
-      } catch (e) { console.error('updateInventoryFromPurchase', e); }
+      } catch (e) { 
+        console.error('updateInventoryFromPurchase error:', e);
+        showToast('Warning: Inventory update failed', 'error');
+      }
     };
 
     const revertInventoryFromPurchase = async (purchase) => {
@@ -1982,13 +2002,41 @@
           .where('drugName').equals(purchase.drugName)
           .and(i => i.dose === purchase.dose && i.unit === purchase.unit)
           .first();
+          
         if (existing) {
           const newStock = Math.max(0, Number(existing.totalStock) - Number(purchase.quantity));
-          await localDB.inventory.update(existing.id, { totalStock: newStock, lastUpdated: new Date(), updatedAt: nowIso() });
-          await queueSync('inventory', 'upsert', { ...existing, totalStock: newStock, updatedAt: nowIso(), localTableId: existing.id });
+          
+          if (newStock === 0) {
+            // Remove inventory entry completely when stock reaches 0
+            await localDB.inventory.delete(existing.id);
+            await queueSync('inventory', 'delete', { 
+              remoteId: existing.remoteId, 
+              id: existing.id, 
+              updatedAt: nowIso() 
+            });
+            console.log(`Removed inventory: ${purchase.drugName} (stock reached 0)`);
+          } else {
+            // Update with reduced stock
+            const updated = {
+              totalStock: newStock,
+              lastUpdated: new Date(),
+              updatedAt: nowIso()
+            };
+            await localDB.inventory.update(existing.id, updated);
+            await queueSync('inventory', 'upsert', { 
+              ...existing, 
+              ...updated, 
+              localTableId: existing.id 
+            });
+            console.log(`Reverted inventory: ${purchase.drugName} - New stock: ${newStock}`);
+          }
         }
+        
         await triggerDataSync(['inventory', 'dashboard']);
-      } catch (e) { console.error('revertInventory', e); }
+      } catch (e) { 
+        console.error('revertInventoryFromPurchase error:', e); 
+        showToast('Warning: Inventory revert failed', 'error');
+      }
     };
 
     const updateInventoryFromSale = async (drugs) => {
@@ -1998,14 +2046,34 @@
             .where('drugName').equals(d.name)
             .and(i => i.dose === d.dose && i.unit === d.unit)
             .first();
+            
           if (existing) {
             const newStock = Math.max(0, Number(existing.totalStock) - Number(d.quantity));
-            await localDB.inventory.update(existing.id, { totalStock: newStock, lastUpdated: new Date(), updatedAt: nowIso() });
-            await queueSync('inventory', 'upsert', { ...existing, totalStock: newStock, updatedAt: nowIso(), localTableId: existing.id });
+            
+            // Update inventory with new stock level
+            const updated = {
+              totalStock: newStock,
+              lastUpdated: new Date(),
+              updatedAt: nowIso()
+            };
+            
+            await localDB.inventory.update(existing.id, updated);
+            await queueSync('inventory', 'upsert', { 
+              ...existing, 
+              ...updated, 
+              localTableId: existing.id 
+            });
+            
+            console.log(`Sale reduced inventory: ${d.name} - New stock: ${newStock}`);
+          } else {
+            console.warn(`Sale attempted for non-existent inventory item: ${d.name}`);
           }
         }
         await triggerDataSync(['inventory', 'dashboard']);
-      } catch (e) { console.error('updateInventoryFromSale', e); }
+      } catch (e) { 
+        console.error('updateInventoryFromSale error:', e);
+        showToast('Warning: Sales inventory update failed', 'error'); 
+      }
     };
 
     const validateInventoryAvailability = async (drugName, dose, unit, requestedQuantity) => {
@@ -2242,12 +2310,19 @@
       }
     };
 
-    // -------------- Dashboard --------------
+    // -------------- Dashboard - FIXED DATE FILTERING --------------
     const updateDashboardStats = async () => {
       try {
         const today = new Date();
-        const ymd = today.toISOString().slice(0,10);
-        const salesToday = await localDB.sales.where('timestamp').between(new Date(`${ymd}T00:00:00`), new Date(`${ymd}T23:59:59`)).toArray();
+        const todayStart = startOfDay(today);
+        const todayEnd = endOfDay(today);
+        
+        // Use proper date filtering for today's sales
+        const salesToday = await localDB.sales.filter(sale => {
+          const saleDate = new Date(sale.timestamp);
+          return saleDate >= todayStart && saleDate <= todayEnd;
+        }).toArray();
+        
         const todayTotal = salesToday.reduce((s, x) => s + Number(x.totalPaid || 0), 0);
         el('todaySales').textContent = formatCurrency(todayTotal);
 
@@ -2269,59 +2344,110 @@
       } catch (e) { console.error('dashboard', e); }
     };
 
+    // Updated to show 12 months instead of 7 days
     const updateDashboardCharts = (totalIncome, totalExpenses, netProfit, salesData) => {
       if (dashboardCharts.incomeExpense) {
         dashboardCharts.incomeExpense.data.datasets[0].data = [totalIncome, totalExpenses];
         dashboardCharts.incomeExpense.update();
       }
       if (dashboardCharts.salesTrend) {
-        const last7 = Array.from({ length: 7 }, (_, i) => {
-          const d = new Date(); d.setDate(d.getDate() - (6 - i));
+        // Get last 12 months
+        const last12Months = Array.from({ length: 12 }, (_, i) => {
+          const d = new Date();
+          d.setMonth(d.getMonth() - (11 - i));
+          d.setDate(1); // First day of month
           return d;
         });
-        const daily = last7.map(d => {
-          const dayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0,0,0);
-          const dayEnd = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23,59,59,999);
-          const ds = salesData.filter(s => {
-            const sd = new Date(s.timestamp);
-            return sd >= dayStart && sd <= dayEnd;
+        
+        const monthlyData = last12Months.map(monthStart => {
+          const monthEnd = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0, 23, 59, 59, 999);
+          const monthlySales = salesData.filter(s => {
+            const saleDate = new Date(s.timestamp);
+            return saleDate >= monthStart && saleDate <= monthEnd;
           });
-          return ds.reduce((sum, s) => sum + Number(s.totalPaid || 0), 0);
+          return monthlySales.reduce((sum, s) => sum + Number(s.totalPaid || 0), 0);
         });
-        dashboardCharts.salesTrend.data.labels = last7.map(d => d.toLocaleDateString('en-ET', { month: 'short', day: 'numeric' }));
-        dashboardCharts.salesTrend.data.datasets[0].data = daily;
+        
+        dashboardCharts.salesTrend.data.labels = last12Months.map(d => 
+          d.toLocaleDateString('en-ET', { month: 'short', year: '2-digit' })
+        );
+        dashboardCharts.salesTrend.data.datasets[0].data = monthlyData;
         dashboardCharts.salesTrend.update();
       }
     };
 
-    const initializeCharts = () => {
-      if (currentUser?.role !== 'admin') return;
-      try {
-        const ctx1 = el('incomeExpenseChart')?.getContext('2d');
-        if (ctx1) {
-          dashboardCharts.incomeExpense = new Chart(ctx1, {
-            type: 'doughnut',
-            data: {
-              labels: ['Income', 'Expenses'],
-              datasets: [{ data: [0,0], backgroundColor: ['rgba(16,185,129,.85)', 'rgba(239,68,68,.85)'], borderWidth: 0 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true } } } }
-          });
-        }
-        const ctx2 = el('salesTrendChart')?.getContext('2d');
-        if (ctx2) {
-          dashboardCharts.salesTrend = new Chart(ctx2, {
-            type: 'line',
-            data: { labels: [], datasets: [{ label: 'Daily Sales (ETB)', data: [], borderColor: '#5D5CDE', backgroundColor: 'rgba(93,92,222,.12)', borderWidth: 2.5, fill: true, tension: .35, pointBackgroundColor: '#5D5CDE', pointBorderColor: '#fff', pointRadius: 4, pointHoverRadius: 6 }] },
-            options: {
-              responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
-              scales: { y: { beginAtZero: true, ticks: { callback: v => `${v.toLocaleString()} ETB` } } },
-              interaction: { intersect: false, mode: 'index' }
-            }
-          });
-        }
-      } catch (e) { console.error('init charts', e); }
-    };
+    function initializeCharts() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+
+  // Ensure canvases exist
+  const incomeCanvas = document.getElementById('incomeExpenseChart');
+  const salesCanvas = document.getElementById('salesTrendChart');
+  if (!incomeCanvas || !salesCanvas) return;
+
+  // Destroy old instances if they exist (prevents duplicates)
+  if (dashboardCharts.incomeExpense) {
+    try { dashboardCharts.incomeExpense.destroy(); } catch {}
+    dashboardCharts.incomeExpense = null;
+  }
+  if (dashboardCharts.salesTrend) {
+    try { dashboardCharts.salesTrend.destroy(); } catch {}
+    dashboardCharts.salesTrend = null;
+  }
+
+  const ctx1 = incomeCanvas.getContext('2d');
+  const ctx2 = salesCanvas.getContext('2d');
+
+  // Doughnut: Income vs Expenses
+  dashboardCharts.incomeExpense = new Chart(ctx1, {
+    type: 'doughnut',
+    data: {
+      labels: ['Income', 'Expenses'],
+      datasets: [{
+        data: [0, 0],
+        backgroundColor: ['rgba(16,185,129,.85)', 'rgba(239,68,68,.85)'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { usePointStyle: true } }
+      }
+    }
+  });
+
+  // Line: Monthly Sales
+  dashboardCharts.salesTrend = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        label: 'Monthly Sales (ETB)',
+        data: [],
+        borderColor: '#5D5CDE',
+        backgroundColor: 'rgba(93,92,222,.12)',
+        borderWidth: 2.5,
+        fill: true,
+        tension: .35,
+        pointBackgroundColor: '#5D5CDE',
+        pointBorderColor: '#fff',
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: v => `${v.toLocaleString()} ETB` } },
+        x: { ticks: { maxTicksLimit: 12 } }
+      },
+      interaction: { intersect: false, mode: 'index' }
+    }
+  });
+}
 
     // -------------- Reports - header builder --------------
     const generateProfessionalReportHeader = (title, showClinicHeader = true) => {
@@ -2356,18 +2482,30 @@
       `;
     };
 
-    // -------------- Report Helpers --------------
+    // -------------- FIXED Report Helpers with consistent date filtering --------------
     const withRange = (defaultFrom, defaultTo) => {
       if (currentReportRange?.from && currentReportRange?.to) {
-        return { from: startOfDay(new Date(currentReportRange.from)), to: endOfDay(new Date(currentReportRange.to)) };
+        const fromDate = new Date(currentReportRange.from);
+        const toDate = new Date(currentReportRange.to);
+        return { 
+          from: startOfDay(fromDate), 
+          to: endOfDay(toDate) 
+        };
       }
       return { from: defaultFrom, to: defaultTo };
     };
 
-    // -------------- Reports: Sales --------------
+    // -------------- FIXED Reports: Sales with proper date filtering --------------
     const generateDailySalesReport = async (forExport=true) => {
-      const { from, to } = withRange(startOfDay(new Date()), endOfDay(new Date()));
-      const sales = await localDB.sales.where('timestamp').between(from, to).toArray();
+      const today = new Date();
+      const { from, to } = withRange(startOfDay(today), endOfDay(today));
+      
+      // Use consistent date filtering across all reports
+      const sales = await localDB.sales.filter(sale => {
+        const saleDate = new Date(sale.timestamp);
+        return saleDate >= from && saleDate <= to;
+      }).toArray();
+      
       let html = generateProfessionalReportHeader('Daily Sales Report', forExport);
       const tableClass = forExport ? 'modern-table' : 'compact-table';
       const sum = sales.reduce((s, x) => s + Number(x.totalPaid || 0), 0);
@@ -2405,7 +2543,12 @@
       const today = new Date();
       const weekStart = startOfDay(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6));
       const { from, to } = withRange(weekStart, endOfDay(today));
-      const sales = await localDB.sales.where('timestamp').between(from, to).toArray();
+      
+      const sales = await localDB.sales.filter(sale => {
+        const saleDate = new Date(sale.timestamp);
+        return saleDate >= from && saleDate <= to;
+      }).toArray();
+      
       let html = generateProfessionalReportHeader('Weekly Sales Report', forExport);
       const tableClass = forExport ? 'modern-table' : 'compact-table';
       const sum = sales.reduce((s, x) => s + Number(x.totalPaid || 0), 0);
@@ -2446,7 +2589,12 @@
       const today = new Date();
       const monthAgo = startOfDay(new Date(today.getFullYear(), today.getMonth(), 1));
       const { from, to } = withRange(monthAgo, endOfDay(today));
-      const sales = await localDB.sales.where('timestamp').between(from, to).toArray();
+      
+      const sales = await localDB.sales.filter(sale => {
+        const saleDate = new Date(sale.timestamp);
+        return saleDate >= from && saleDate <= to;
+      }).toArray();
+      
       let html = generateProfessionalReportHeader('Monthly Sales Report', forExport);
       const tableClass = forExport ? 'modern-table' : 'compact-table';
       const sum = sales.reduce((s, x) => s + Number(x.totalPaid || 0), 0);
@@ -2492,7 +2640,12 @@
       const today = new Date();
       const yearStart = startOfDay(new Date(today.getFullYear(), 0, 1));
       const { from, to } = withRange(yearStart, endOfDay(today));
-      const sales = await localDB.sales.where('timestamp').between(from, to).toArray();
+      
+      const sales = await localDB.sales.filter(sale => {
+        const saleDate = new Date(sale.timestamp);
+        return saleDate >= from && saleDate <= to;
+      }).toArray();
+      
       let html = generateProfessionalReportHeader('Yearly Sales Report', forExport);
       const tableClass = forExport ? 'modern-table' : 'compact-table';
       const sum = sales.reduce((s, x) => s + Number(x.totalPaid || 0), 0);
@@ -2530,7 +2683,7 @@
         const avg = m.count ? m.revenue / m.count : 0;
         const g = growths[i];
         const isUp = g !== null && g >= 0;
-        const arrow = g === null ? '--' : (isUp ? '△' : '▽');
+        const arrow = g === null ? '--' : (isUp ? '↗' : '↘');
         const color = g === null ? '#6B7280' : (isUp ? '#10B981' : '#EF4444');
         const gText = g === null ? 'N/A' : `${Math.abs(g).toFixed(1)}%`;
         html += `
@@ -2547,7 +2700,7 @@
       return html;
     };
 
-    // -------------- Reports: Inventory & Financials (using same logic as before) --------------
+    // -------------- FIXED Reports: Inventory & Financials with consistent date filtering --------------
     const generateInventoryReport = async (forExport=true) => {
       const inv = await localDB.inventory.toArray();
       let html = generateProfessionalReportHeader('Current Inventory Report', forExport);
@@ -2661,8 +2814,16 @@
     const generateInventoryMovementReport = async (forExport=true) => {
       const defaultFrom = startOfDay(new Date(Date.now() - 30*86400000));
       const { from, to } = withRange(defaultFrom, endOfDay(new Date()));
-      const purchases = await localDB.purchases.where('timestamp').between(from, to).toArray();
-      const sales = await localDB.sales.where('timestamp').between(from, to).toArray();
+      
+      const purchases = await localDB.purchases.filter(purchase => {
+        const purchaseDate = new Date(purchase.timestamp);
+        return purchaseDate >= from && purchaseDate <= to;
+      }).toArray();
+      
+      const sales = await localDB.sales.filter(sale => {
+        const saleDate = new Date(sale.timestamp);
+        return saleDate >= from && saleDate <= to;
+      }).toArray();
 
       const movement = {};
       const keyOf = (n,d,u) => `${n}|${d}|${u}`;
@@ -2771,7 +2932,12 @@
     const generateExpenseBreakdownReport = async (forExport=true) => {
       const defaultFrom = startOfDay(new Date(Date.now() - 30*86400000));
       const { from, to } = withRange(defaultFrom, endOfDay(new Date()));
-      const expenses = await localDB.expenses.where('timestamp').between(from, to).toArray();
+      
+      const expenses = await localDB.expenses.filter(expense => {
+        const expenseDate = new Date(expense.timestamp);
+        return expenseDate >= from && expenseDate <= to;
+      }).toArray();
+      
       const tableClass = forExport ? 'modern-table' : 'compact-table';
       let html = generateProfessionalReportHeader('Expense Breakdown (Last 30 Days)', forExport);
       const totalExp = expenses.reduce((s,e)=> s + Number(e.amount||0), 0);
@@ -2807,7 +2973,12 @@
     const generateWorkerPerformanceReport = async (forExport=true) => {
       const defaultFrom = startOfDay(new Date(Date.now() - 30*86400000));
       const { from, to } = withRange(defaultFrom, endOfDay(new Date()));
-      const sales = await localDB.sales.where('timestamp').between(from, to).toArray();
+      
+      const sales = await localDB.sales.filter(sale => {
+        const saleDate = new Date(sale.timestamp);
+        return saleDate >= from && saleDate <= to;
+      }).toArray();
+      
       const byUser = {};
       sales.forEach(s => {
         const key = s.createdByEmail || s.createdBy || 'Unknown';
@@ -2853,7 +3024,12 @@
     const generateDrugWiseSalesReport = async (forExport=true) => {
       const defaultFrom = startOfDay(new Date(Date.now() - 30*86400000));
       const { from, to } = withRange(defaultFrom, endOfDay(new Date()));
-      const sales = await localDB.sales.where('timestamp').between(from, to).toArray();
+      
+      const sales = await localDB.sales.filter(sale => {
+        const saleDate = new Date(sale.timestamp);
+        return saleDate >= from && saleDate <= to;
+      }).toArray();
+      
       const map = {};
       const keyOf = (d) => `${d.name}|${d.dose}|${d.unit}`;
       for (const s of sales) {
@@ -3019,7 +3195,7 @@
       }
     };
 
-    // -------------- Sales table --------------
+    // -------------- Sales table with FIXED date filtering --------------
     const loadSalesTable = async () => {
       try {
         const dateFilter = el('salesDateFilter')?.value || '';
@@ -3027,9 +3203,12 @@
         let sales = await localDB.sales.orderBy('timestamp').reverse().toArray();
 
         if (dateFilter) {
-          const from = new Date(dateFilter + 'T00:00:00');
-          const to = new Date(dateFilter + 'T23:59:59');
-          sales = sales.filter(s => new Date(s.timestamp) >= from && new Date(s.timestamp) <= to);
+          const from = startOfDay(new Date(dateFilter));
+          const to = endOfDay(new Date(dateFilter));
+          sales = sales.filter(s => {
+            const saleDate = new Date(s.timestamp);
+            return saleDate >= from && saleDate <= to;
+          });
         }
         if (queryText) {
           sales = await Promise.all(sales.map(async s => {
@@ -3181,7 +3360,7 @@
       }
     };
 
-    // -------------- Purchases --------------
+    // -------------- Purchases with FIXED inventory updates --------------
     const loadPurchasesTable = async () => {
       try {
         const purchases = await localDB.purchases.orderBy('timestamp').reverse().toArray();
@@ -3238,22 +3417,48 @@
     const savePurchase = async (data) => {
       try {
         if (editingPurchaseId) {
+          // Handle purchase edit with proper inventory updates
           const oldP = await localDB.purchases.get(editingPurchaseId);
-          const updated = { ...data, createdBy: currentUser.role, timestamp: oldP.timestamp, updatedAt: nowIso() };
+          if (!oldP) {
+            showAlert('Error', 'Original purchase not found.');
+            return false;
+          }
+          
+          const updated = { 
+            ...data, 
+            createdBy: oldP.createdBy, 
+            timestamp: oldP.timestamp, 
+            updatedAt: nowIso() 
+          };
+          
+          // Update purchase record
           await localDB.purchases.update(editingPurchaseId, updated);
-          await queueSync('purchases', 'upsert', { ...oldP, ...updated, localTableId: editingPurchaseId });
+          await queueSync('purchases', 'upsert', { 
+            ...oldP, 
+            ...updated, 
+            localTableId: editingPurchaseId 
+          });
+          
+          // Update inventory (this will revert old and add new)
           await updateInventoryFromPurchase(updated, true, oldP);
           await logActivity('update', 'purchases', `Updated purchase of ${updated.drugName} from ${updated.supplier}`);
+          
           editingPurchaseId = null;
           el('purchaseModalTitle').textContent = 'New Purchase';
           el('purchaseSubmitBtn').textContent = 'Add Purchase';
+          
+          showToast('Purchase updated successfully', 'success');
         } else {
+          // Handle new purchase
           const p = { ...data, createdBy: currentUser.role, timestamp: new Date(), updatedAt: nowIso() };
           const pid = await localDB.purchases.add(p);
           await queueSync('purchases', 'upsert', { ...p, localTableId: pid });
           await updateInventoryFromPurchase(p);
           await logActivity('create', 'purchases', `Purchase of ${p.drugName} from ${p.supplier}`);
+          
+          showToast('Purchase added successfully', 'success');
         }
+        
         scheduleSyncSoon('purchase-change');
         return true;
       } catch (e) {
@@ -3269,17 +3474,23 @@
       const delBtn = e.target.closest('[data-delete-purchase]');
       if (delBtn) {
         const id = Number(delBtn.getAttribute('data-delete-purchase'));
-        showConfirm('Delete Purchase', 'Are you sure you want to delete this purchase?', async () => {
+        showConfirm('Delete Purchase', 'Are you sure you want to delete this purchase? This will also update inventory levels.', async () => {
           try {
             const p = await localDB.purchases.get(id);
-            if (p) await revertInventoryFromPurchase(p);
+            if (p) {
+              // Revert inventory before deleting purchase
+              await revertInventoryFromPurchase(p);
+            }
             await localDB.purchases.delete(id);
             await queueSync('purchases', 'delete', { remoteId: p?.remoteId, id: p?.id, updatedAt: nowIso() });
-            await logActivity('delete', 'purchases', `Deleted purchase ID: ${id}`);
+            await logActivity('delete', 'purchases', `Deleted purchase ID: ${id} - ${p?.drugName || 'Unknown'}`);
             await triggerDataSync(['purchases', 'inventory', 'dashboard']);
-            showToast('Purchase deleted', 'success');
+            showToast('Purchase deleted and inventory updated', 'success');
             scheduleSyncSoon('purchase-delete');
-          } catch { showAlert('Error', 'Failed to delete purchase.'); }
+          } catch(err) { 
+            console.error('Delete purchase error:', err);
+            showAlert('Error', 'Failed to delete purchase. Please try again.'); 
+          }
         });
       }
     });
@@ -3387,9 +3598,12 @@
         if (userFilter) logs = logs.filter(l => (userFilter.toLowerCase() === (currentUser?.role||'').toLowerCase()));
         if (actionFilter) logs = logs.filter(l => l.action === actionFilter);
         if (dateFilter) {
-          const from = new Date(dateFilter + 'T00:00:00');
-          const to = new Date(dateFilter + 'T23:59:59');
-          logs = logs.filter(l => new Date(l.timestamp) >= from && new Date(l.timestamp) <= to);
+          const from = startOfDay(new Date(dateFilter));
+          const to = endOfDay(new Date(dateFilter));
+          logs = logs.filter(l => {
+            const logDate = new Date(l.timestamp);
+            return logDate >= from && logDate <= to;
+          });
         }
         const tbody = el('logsTableBody'); tbody.innerHTML = '';
         if (!logs.length) {
@@ -3520,611 +3734,867 @@
         return latest;
       } catch (e) { console.error('findMostRecentBackup', e); return null; }
     };
-    const fallbackFilePicker = () => new Promise((resolve) => {
-      const input = document.createElement('input');
-      input.type = 'file'; input.accept = '.json';
-      input.onchange = async (e) => {
-        if (e.target.files[0]) {
-          try {
-            const text = await e.target.files[0].text();
-            resolve(JSON.parse(text));
-          } catch {
-            showAlert('Error', 'Invalid backup file. Please select a valid backup file.');
-            resolve(null);
-          }
-        } else resolve(null);
-      };
-      input.click();
-    });
-    const performRestore = async (data) => {
-      if (!data?.version || !data?.timestamp) throw new Error('Invalid backup file format');
-      const backupRole = data.role, currentRole = currentUser?.role || '';
-      if (backupRole !== currentRole) {
-        showConfirm('Cross-Role Restore', `This backup was created by ${backupRole} and you are ${currentRole}. This will merge data instead of overwriting. Continue?`, async () => {
-          await mergeData(data, currentRole);
-        });
-      } else {
-        showConfirm('Restore Backup', 'This will replace all current data with the backup. Are you sure?', async () => {
-          await overwriteData(data);
-        });
-      }
-    };
-    const mergeData = async (incoming, role) => {
+
+    const restoreLatestBackup = async () => {
       try {
-        await localDB.transaction('rw', localDB.tables, async () => {
-          if (incoming.patients) {
-            for (const p of incoming.patients) {
-              const ex = await localDB.patients.where('mrn').equals(p.mrn).first();
-              if (ex) {
-                const merged = resolveRecord({ ...ex }, { ...p }, 'patients');
-                await localDB.patients.update(ex.id, merged);
-              } else { await localDB.patients.add(p); }
-            }
-          }
-          if (incoming.sales) {
-            for (const s of incoming.sales) {
-              const ex = await localDB.sales.where('timestamp').equals(s.timestamp).and(x => x.patientMrn === s.patientMrn).first();
-              if (!ex) await localDB.sales.add(s);
-            }
-          }
-          if (incoming.inventory) {
-            for (const it of incoming.inventory) {
-              const ex = await localDB.inventory.where('drugName').equals(it.drugName).and(i => i.dose === it.dose && i.unit === it.unit).first();
-              if (ex) {
-                const merged = resolveRecord({ ...ex }, { ...it }, 'inventory');
-                await localDB.inventory.update(ex.id, merged);
-              } else { await localDB.inventory.add(it); }
-            }
-          }
-          if (role === 'admin') {
-            if (incoming.purchases) {
-              for (const p of incoming.purchases) {
-                const ex = await localDB.purchases.where('timestamp').equals(p.timestamp).and(x => x.drugName === p.drugName && x.supplier === p.supplier).first();
-                if (!ex) await localDB.purchases.add(p);
-              }
-            }
-            if (incoming.expenses) {
-              for (const e of incoming.expenses) {
-                const ex = await localDB.expenses.where('timestamp').equals(e.timestamp).and(x => x.description === e.description).first();
-                if (!ex) await localDB.expenses.add(e);
-              }
-            }
-          }
-          if (incoming.activityLogs) {
-            for (const l of incoming.activityLogs) {
-              const ex = await localDB.activityLogs.where('timestamp').equals(l.timestamp).and(x => x.details === l.details).first();
-              if (!ex) await localDB.activityLogs.add(l);
-            }
-          }
-          // Merge syncMeta for better tracking
-          if (incoming.syncMeta) {
-            for (const meta of incoming.syncMeta) {
-              const ex = await localDB.syncMeta.where('table').equals(meta.table).first();
-              if (ex) {
-                const newerTime = new Date(Math.max(new Date(ex.lastSync || 0), new Date(meta.lastSync || 0)));
-                await localDB.syncMeta.update(ex.id, { lastSync: newerTime, version: Math.max(ex.version || 1, meta.version || 1) });
-              } else {
-                await localDB.syncMeta.add(meta);
-              }
-            }
-          }
-        });
-        await recordBackupHistory(`Merged_${incoming.role}_backup`, 'Merge Restore', 0, 'Success');
-        await logActivity('create', 'restore', `Cross-role merge completed from ${incoming.role} backup`);
-        await triggerDataSync(['dashboard','inventory','sales','purchases','expenses','logs']);
-        showToast('Data merged successfully', 'success');
-        loadBackupHistory();
-        scheduleSyncSoon('post-restore-merge');
-      } catch (e) { console.error('mergeData', e); showAlert('Error', 'Failed to merge backup data. Please try again.'); }
-    };
-    const overwriteData = async (backup) => {
-      try {
-        await localDB.transaction('rw', localDB.tables, async () => {
-          await Promise.all(localDB.tables.map(t => t.clear()));
-          if (backup.users) await localDB.users.bulkAdd(backup.users);
-          if (backup.patients) await localDB.patients.bulkAdd(backup.patients);
-          if (backup.drugs) await localDB.drugs.bulkAdd(backup.drugs);
-          if (backup.suppliers) await localDB.suppliers.bulkAdd(backup.suppliers);
-          if (backup.sales) await localDB.sales.bulkAdd(backup.sales);
-          if (backup.salesDrugs) await localDB.salesDrugs.bulkAdd(backup.salesDrugs);
-          if (backup.purchases) await localDB.purchases.bulkAdd(backup.purchases);
-          if (backup.expenses) await localDB.expenses.bulkAdd(backup.expenses);
-          if (backup.activityLogs) await localDB.activityLogs.bulkAdd(backup.activityLogs);
-          if (backup.inventory) await localDB.inventory.bulkAdd(backup.inventory);
-          if (backup.syncMeta) await localDB.syncMeta.bulkAdd(backup.syncMeta);
-        });
-        await recordBackupHistory(`Restored_${backup.role}_backup`, 'Full Restore', 0, 'Success');
-        await logActivity('create', 'restore', `Full restore completed from ${backup.role} backup`);
-        await triggerDataSync(['dashboard','inventory','sales','purchases','expenses','logs']);
-        showToast('Backup restored successfully', 'success');
-        loadBackupHistory();
-        scheduleSyncSoon('post-restore-overwrite');
-      } catch (e) { console.error('overwriteData', e); showAlert('Error', 'Failed to restore backup. Please check the file format.'); }
-    };
-    const restoreData = async () => {
-      try {
-        let data = null;
-        if (selectedFolderHandle && 'showDirectoryPicker' in window) {
-          const recent = await findMostRecentBackup();
-          if (recent) {
-            const file = await recent.getFile();
-            data = JSON.parse(await file.text());
-            showToast(`Found backup: ${recent.name}`, 'info');
-          } else {
-            showAlert('No Backups', 'No backup files found in selected folder.');
-            return;
-          }
-        } else {
-          data = await fallbackFilePicker();
-          if (!data) return;
+        const latest = await findMostRecentBackup();
+        if (!latest) {
+          showAlert('No Backup Found', 'No backup files found in the selected folder.');
+          return;
         }
-        await performRestore(data);
+        const file = await latest.getFile();
+        await processBackupFile(file);
       } catch (e) {
-        console.error('restoreData', e);
+        console.error('restoreLatestBackup', e);
         showAlert('Error', 'Failed to restore backup. Please try again.');
       }
     };
-    const importLocalBackup = async (file) => {
+
+    const processBackupFile = async (file) => {
       try {
         const text = await file.text();
         const data = JSON.parse(text);
-        if (!data?.version || !data?.timestamp) throw new Error('Invalid');
-        await performRestore(data);
-      } catch {
-        showAlert('Error', 'Invalid backup file. Please select a valid backup file.');
+        
+        if (!data.version || !data.timestamp) {
+          throw new Error('Invalid backup file format');
+        }
+
+        showConfirm(
+          'Restore Backup', 
+          `This will replace all current data with backup from ${formatDate(data.timestamp)}. Continue?`,
+          async () => {
+            await performRestore(data, file.name);
+          }
+        );
+      } catch (e) {
+        console.error('processBackupFile', e);
+        showAlert('Error', 'Invalid backup file. Please select a valid backup.');
       }
     };
+
+    const performRestore = async (data, fileName) => {
+      try {
+        // Smart merge logic for cross-role compatibility
+        const mergeData = async (tableName, backupRecords) => {
+          const existing = await localDB[tableName].toArray();
+          const merged = new Map();
+
+          // Add existing records first
+          existing.forEach(record => {
+            const key = record.remoteId || record.mrn || record.id;
+            merged.set(key, record);
+          });
+
+          // Merge backup records
+          backupRecords.forEach(record => {
+            const key = record.remoteId || record.mrn || record.id;
+            const existingRecord = merged.get(key);
+            
+            if (!existingRecord) {
+              // New record from backup
+              merged.set(key, { ...record, updatedAt: nowIso() });
+            } else {
+              // Merge with conflict resolution
+              const resolved = resolveRecord(existingRecord, record, tableName);
+              merged.set(key, { ...resolved, updatedAt: nowIso() });
+            }
+          });
+
+          return Array.from(merged.values());
+        };
+
+        // Clear and restore tables
+        const tablesToRestore = ['patients', 'sales', 'purchases', 'expenses', 'inventory', 'activityLogs'];
+        
+        await localDB.transaction('rw', tablesToRestore.map(t => localDB[t]), async () => {
+          for (const table of tablesToRestore) {
+            if (data[table] && Array.isArray(data[table])) {
+              const mergedData = await mergeData(table, data[table]);
+              await localDB[table].clear();
+              await localDB[table].bulkAdd(mergedData);
+            }
+          }
+        });
+
+        await recordBackupHistory(fileName, 'Restore', 0, 'Success');
+        await logActivity('restore', 'backup', `Data restored from ${fileName}`);
+        
+        // Force sync after restore
+        await scheduleSyncNow('restore-complete');
+        await triggerDataSync(['dashboard', 'inventory', 'sales', 'purchases', 'expenses', 'logs']);
+        
+        showToast('Backup restored successfully', 'success');
+        loadBackupHistory();
+      } catch (e) {
+        console.error('performRestore', e);
+        await recordBackupHistory(fileName || 'unknown', 'Restore', 0, 'Failed');
+        showAlert('Error', 'Failed to restore backup. Please try again.');
+      }
+    };
+
     const loadBackupHistory = async () => {
       try {
         const history = await localDB.backupHistory.orderBy('date').reverse().toArray();
-        const tbody = el('backupHistoryBody'); tbody.innerHTML = '';
+        const tbody = el('backupHistoryBody');
+        tbody.innerHTML = '';
+        
         if (!history.length) {
           el('backupEmptyState')?.classList.remove('hidden');
           return;
-        } else el('backupEmptyState')?.classList.add('hidden');
-        for (const b of history) {
+        } else {
+          el('backupEmptyState')?.classList.add('hidden');
+        }
+
+        for (const entry of history) {
           const tr = document.createElement('tr');
+          const statusColor = entry.status === 'Success' ? '#10B981' : '#EF4444';
+          const statusIcon = entry.status === 'Success' ? '✓' : '✗';
+          
           tr.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm+ text-gray-800 dark:text-gray-100 font-semibold">${formatDate(b.date)} ${formatTime(b.date)}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm+ text-gray-800 dark:text-gray-100 font-semibold">${b.type}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm+ text-gray-800 dark:text-gray-100 font-semibold">${b.size}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm+ font-extrabold ${b.status === 'Success' ? 'text-accent' : 'text-danger'}">${b.status}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm+ text-gray-800 dark:text-gray-100 font-semibold">${b.fileName}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm+ font-extrabold text-gray-900 dark:text-white">${formatDate(entry.date)} ${formatTime(entry.date)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm+ text-gray-800 dark:text-gray-100 font-semibold">${entry.type}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm+ text-gray-800 dark:text-gray-100 font-semibold">${entry.size}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm+ font-extrabold" style="color: ${statusColor};">${statusIcon} ${entry.status}</td>
+            <td class="px-6 py-4 text-sm+ text-gray-800 dark:text-gray-100 font-semibold">${entry.fileName || 'N/A'}</td>
           `;
           tbody.appendChild(tr);
         }
-      } catch (e) { console.error('history', e); }
+      } catch (e) {
+        console.error('loadBackupHistory', e);
+      }
     };
 
-    // -------------- Receipt Preview / Print --------------
-    const renderReceiptHTML = (sale, patient) => {
-      const lines = (sale.drugs || []).map(d => `
-        <tr>
-          <td>${d.name}</td>
-          <td>${d.dose}</td>
-          <td style="text-align:center">${d.quantity} ${d.unit}</td>
-        </tr>
-      `).join('');
-      return `
-        <div style="text-align:center;margin-bottom:10px">
-          <div style="font-weight:900;font-size:16px;color:#111827">Sheikh Bakri Saphalo Medium Clinic</div>
-          <div style="font-size:12px;color:#6B7280">Professional Pharmacy Management System</div>
-        </div>
-        <div style="font-size:12px;margin-bottom:8px; color:#111827">
-          <div><b>MRN:</b> ${sale.patientMrn}</div>
-          <div><b>Patient:</b> ${patient?.name || 'Unknown'} • <b>Date:</b> ${formatDate(sale.timestamp)} ${formatTime(sale.timestamp)}</div>
-          <div><b>Sold by:</b> ${sale.createdByEmail || sale.createdBy}</div>
-        </div>
-        <table style="width:100%;border-collapse:collapse;font-size:12px; color:#111827">
-          <thead>
-            <tr style="background:#EEF2FF">
-              <th style="text-align:left;padding:6px;border:1px solid #E5E7EB">Drug</th>
-              <th style="text-align:left;padding:6px;border:1px solid #E5E7EB">Dose</th>
-              <th style="text-align:center;padding:6px;border:1px solid #E5E7EB">Qty</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${lines || '<tr><td colspan="3" style="padding:6px;border:1px solid #E5E7EB;text-align:center;color:#6B7280">No items</td></tr>'}
-          </tbody>
-        </table>
-        <div style="margin-top:10px;text-align:right;font-weight:900;color:#10B981">Total Paid: ${formatCurrency(sale.totalPaid)}</div>
-        <div style="margin-top:8px;text-align:center;font-size:11px;color:#6B7280">Thank you. Get well soon.</div>
-      `;
-    };
+   
+    // Receipt generation
     const showReceiptPreview = async (sale) => {
-      const patient = await localDB.patients.where('mrn').equals(sale.patientMrn).first();
-      el('receiptContent').innerHTML = renderReceiptHTML(sale, patient);
-      openModal('receiptModal');
-      el('printReceiptAction').onclick = () => {
-        const w = window.open('', '_blank', 'width=480,height=640');
-        w.document.write(`<html><head><title>Receipt</title></head><body>${el('receiptContent').innerHTML}</body></html>`);
-        w.document.close();
-        w.focus();
-        w.print();
-        w.close();
-      };
+      try {
+        const patient = await localDB.patients.where('mrn').equals(sale.patientMrn).first();
+        const receiptContent = el('receiptContent');
+        
+        let drugsHtml = '';
+        let total = 0;
+        
+        if (Array.isArray(sale.drugs)) {
+          for (const drug of sale.drugs) {
+            const price = await calculateDrugSellingPrice(drug.name, drug.dose, drug.unit);
+            const subtotal = Number(drug.quantity) * price;
+            total += subtotal;
+            
+            drugsHtml += `
+              <tr>
+                <td>${drug.name}</td>
+                <td>${drug.dose}</td>
+                <td style="text-align: center">${drug.quantity}</td>
+                <td style="text-align: right">${formatCurrency(price)}</td>
+                <td style="text-align: right; font-weight: bold">${formatCurrency(subtotal)}</td>
+              </tr>
+            `;
+          }
+        }
+
+        receiptContent.innerHTML = `
+          <div style="text-align: center; margin-bottom: 20px; border-bottom: 2px solid #5D5CDE; padding-bottom: 15px;">
+            <h2 style="margin: 0; color: #5D5CDE; font-size: 18px; font-weight: bold;">Sheikh Bakri Saphalo Medium Clinic</h2>
+            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Professional Pharmacy Management</p>
+            <p style="margin: 5px 0 0; font-size: 12px; color: #666;">Receipt #${sale.id || 'N/A'}</p>
+          </div>
+          
+          <div style="margin-bottom: 15px;">
+            <h3 style="margin: 0 0 8px; font-size: 14px; color: #333;">Patient Information</h3>
+            <table style="width: 100%; font-size: 12px;">
+              <tr><td><strong>MRN:</strong></td><td>${sale.patientMrn}</td></tr>
+              <tr><td><strong>Name:</strong></td><td>${patient?.name || 'Unknown'}</td></tr>
+              <tr><td><strong>Age:</strong></td><td>${patient?.age || 'N/A'}</td></tr>
+              <tr><td><strong>Sex:</strong></td><td>${patient?.sex || 'N/A'}</td></tr>
+            </table>
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <h3 style="margin: 0 0 8px; font-size: 14px; color: #333;">Prescribed Medications</h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+              <thead>
+                <tr style="background: #f5f5f5;">
+                  <th style="padding: 6px; text-align: left; border: 1px solid #ddd;">Drug</th>
+                  <th style="padding: 6px; text-align: left; border: 1px solid #ddd;">Dose</th>
+                  <th style="padding: 6px; text-align: center; border: 1px solid #ddd;">Qty</th>
+                  <th style="padding: 6px; text-align: right; border: 1px solid #ddd;">Price</th>
+                  <th style="padding: 6px; text-align: right; border: 1px solid #ddd;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${drugsHtml}
+              </tbody>
+            </table>
+          </div>
+
+           <div style="margin-top: 15px; padding-top: 10px; border-top: 2px solid #5D5CDE;">
+            <table style="width: 100%; font-size: 12px;">
+              <tr><td><strong>Total Amount:</strong></td><td style="text-align: right; font-weight: bold; color: #10B981;">${formatCurrency(sale.totalPaid)}</td></tr>
+              <tr><td><strong>Date:</strong></td><td style="text-align: right;">${formatDate(sale.timestamp)}</td></tr>
+              <tr><td><strong>Time:</strong></td><td style="text-align: right;">${formatTime(sale.timestamp)}</td></tr>
+              <tr><td><strong>Served by:</strong></td><td style="text-align: right;">${sale.createdByEmail || sale.createdBy}</td></tr>
+            </table>
+          </div>
+
+          <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 10px; color: #666;">
+            <p style="margin: 0;">Thank you for choosing our pharmacy!</p>
+            <p style="margin: 5px 0 0;">Please keep this receipt for your records.</p>
+          </div>
+        `;
+        
+        openModal('receiptModal');
+      } catch (e) {
+        console.error('showReceiptPreview', e);
+        showAlert('Error', 'Failed to generate receipt preview.');
+      }
     };
 
-        // -------------- Events --------------
-    document.addEventListener('DOMContentLoaded', async () => {
-      initDarkMode();
-      updateDateTime();
-      setInterval(updateDateTime, 1000);
-      updateOnlineStatusUI();
-      updateCloudSyncStatus();
-
-      updateFolderStatus();
-
-      $('#toggleDarkMode')?.addEventListener('click', () => {
-        const on = !document.documentElement.classList.contains('dark');
-        setDarkMode(on);
-      });
-
-      // Try an initial sync after small delay if online
-      setTimeout(() => scheduleSyncSoon('app-load'), 1500);
-      // Periodic background sync every 30s while online
-      setInterval(() => {
-        if (navigator.onLine && currentUser) {
-          scheduleSyncSoon('interval');
-        }
-      }, 30000);
-      // Update cloud sync status every 10s
-      setInterval(updateCloudSyncStatus, 10000);
-    });
-
-    // Auth Toggle
-    el('toggleAuthMode').addEventListener('click', toggleAuthMode);
-
-    // Login
-    el('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = el('loginEmail').value.trim();
-      const password = el('loginPassword').value;
-      el('loginButtonText').textContent = 'Signing in...';
-      el('loginSpinner').style.display = 'inline-block';
-      const result = await authenticateUser(email, password);
-      if (result.success) {
-        currentUser = result.user;
-        currentUserUUID = result.user.uuid;
-        currentUserEmail = result.user.email;
-        el('userRole').textContent = currentUser.role;
-        el('userName').textContent = currentUser.email;
-        el('authScreen').classList.add('hidden');
-        el('mainApp').classList.remove('hidden');
-        applyRoleRestrictions();
-        await updateDashboardStats();
-        initializeCharts();
-        await loadSalesTable();
-        await loadInventoryTable();
-        if (currentUser.role === 'admin') {
-          await loadPurchasesTable();
-          await loadExpensesTable();
-          await loadLogsTable();
-          await loadBackupHistory();
-        }
-        showToast('Logged in successfully', 'success');
-        scheduleSyncNow('post-login');
+    // Print receipt functionality
+        // Enhanced mobile-friendly print functionality
+    const printReceipt = () => {
+      const receiptContent = el('receiptContent');
+      if (!receiptContent) return;
+      
+      // Check if device is mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+      
+      if (isMobile) {
+        // Mobile-friendly approach: Create full-screen print view
+        createMobilePrintView(receiptContent);
       } else {
-        showAlert('Login Failed', result.error);
+        // Desktop approach: Use window.open
+        createDesktopPrintView(receiptContent);
       }
-      el('loginButtonText').textContent = 'Sign In';
-      el('loginSpinner').style.display = 'none';
-    });
+    };
 
-    // Signup
-    el('signupForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = el('signupEmail').value.trim();
-      const password = el('signupPassword').value;
-      const confirmPassword = el('signupConfirmPassword').value;
-      const role = el('signupRole').value;
-      if (password !== confirmPassword) return showAlert('Error', 'Passwords do not match.');
-      el('signupButtonText').textContent = 'Creating Account...';
-      el('signupSpinner').style.display = 'inline-block';
-      const result = await signUpUser(email, password, role);
-      if (result.success) {
-        showToast('Account created. Please sign in.', 'success');
-        toggleAuthMode();
-        el('signupForm').reset();
-      } else {
-        showAlert('Signup Failed', result.error);
-      }
-      el('signupButtonText').textContent = 'Sign Up';
-      el('signupSpinner').style.display = 'none';
-    });
-
-    // Logout
-    el('logoutBtn').addEventListener('click', () => {
-      showConfirm('Logout', 'Are you sure you want to logout?', () => {
-        // Clean up real-time listeners
-        cleanupRealtimeListeners();
-        currentUser = null;
-        currentUserUUID = null;
-        currentUserEmail = null;
-        el('mainApp').classList.add('hidden');
-        el('authScreen').classList.remove('hidden');
-        el('loginForm').reset();
-        el('signupForm').reset();
-        updateOnlineStatusUI();
+    const createMobilePrintView = (receiptContent) => {
+      // Create a full-screen overlay for mobile print
+      const printOverlay = document.createElement('div');
+      printOverlay.id = 'mobilePrintOverlay';
+      printOverlay.className = 'fixed inset-0 bg-white z-[9999] overflow-y-auto';
+      printOverlay.innerHTML = `
+        <div class="min-h-screen">
+          <!-- Mobile Print Header -->
+          <div class="sticky top-0 bg-white border-b-2 border-gray-200 p-4 flex justify-between items-center print:hidden">
+            <h3 class="text-lg font-bold text-gray-900">Receipt Preview</h3>
+            <div class="flex gap-2">
+              <button id="mobilePrintBtn" class="bg-primary text-white px-4 py-2 rounded-lg font-bold">🖨️ Print</button>
+              <button id="closeMobilePrint" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-bold">✕ Close</button>
+            </div>
+          </div>
+          
+          <!-- Print Content -->
+          <div id="mobilePrintContent" class="p-4 max-w-md mx-auto">
+            ${receiptContent.innerHTML}
+          </div>
+          
+          <!-- Mobile Print Instructions -->
+          <div class="p-4 bg-blue-50 border-t border-blue-200 text-center print:hidden">
+            <p class="text-sm text-blue-700 font-semibold">📱 Mobile Print Instructions:</p>
+            <p class="text-xs text-blue-600 mt-1">Tap "Print" → Select your printer → Choose "Save as PDF" if no printer available</p>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(printOverlay);
+      
+      // Add print styles for mobile
+      const printStyles = document.createElement('style');
+      printStyles.textContent = `
+        @media print {
+          #mobilePrintOverlay {
+            position: static !important;
+            z-index: auto !important;
+            background: white !important;
+          }
+          #mobilePrintContent {
+            padding: 0 !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+          }
+          .print\\:hidden {
+            display: none !important;
+          }
+        }
+      `;
+      document.head.appendChild(printStyles);
+      
+      // Event listeners
+      document.getElementById('mobilePrintBtn').addEventListener('click', () => {
+        window.print();
       });
-    });
+      
+      document.getElementById('closeMobilePrint').addEventListener('click', () => {
+        document.body.removeChild(printOverlay);
+        document.head.removeChild(printStyles);
+      });
+      
+      // Close on escape key
+      const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+          document.body.removeChild(printOverlay);
+          document.head.removeChild(printStyles);
+          document.removeEventListener('keydown', handleEscape);
+        }
+      };
+      document.addEventListener('keydown', handleEscape);
+    };
 
+    const createDesktopPrintView = (receiptContent) => {
+      const printWindow = window.open('', '_blank', 'width=600,height=800');
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Receipt - Sheikh Bakri Saphalo Medium Clinic</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body { 
+              font-family: Arial, sans-serif; 
+              margin: 20px; 
+              line-height: 1.4;
+            }
+            table { 
+              border-collapse: collapse; 
+              width: 100%;
+            }
+            th, td { 
+              padding: 8px 4px; 
+              border: 1px solid #ddd;
+            }
+            th {
+              background-color: #f5f5f5;
+              font-weight: bold;
+            }
+            .no-print {
+              display: block;
+              text-align: center;
+              margin: 20px 0;
+              padding: 10px;
+              background: #f0f9ff;
+              border: 1px solid #0ea5e9;
+              border-radius: 5px;
+            }
+            @media print { 
+              body { margin: 0; }
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="no-print">
+            <button onclick="window.print()" style="background: #5D5CDE; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">ð¨ï¸ Print Receipt</button>
+            <button onclick="window.close()" style="background: #6B7280; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-left: 10px;">â Close</button>
+          </div>
+          ${receiptContent.innerHTML}
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+    };
+
+
+    // -------------- Event Handlers --------------
+    
     // Navigation
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const section = `${btn.dataset.section}Section`;
-        showSection(section);
-        switch (btn.dataset.section) {
-          case 'sales': await loadSalesTable(); break;
-          case 'purchases': await loadPurchasesTable(); break;
-          case 'inventory': await loadInventoryTable(); break;
-          case 'expenses': await loadExpensesTable(); break;
-          case 'logs': await loadLogsTable(); break;
-          case 'backup': await loadBackupHistory(); break;
-          case 'dashboard': await updateDashboardStats(); break;
-        }
-      });
+    document.addEventListener('click', (e) => {
+      const navBtn = e.target.closest('.nav-btn');
+      if (!navBtn) return;
+      const section = navBtn.getAttribute('data-section');
+      showSection(section + 'Section');
+      
+      // Load section data if needed
+      switch (section) {
+        case 'dashboard': updateDashboardStats(); break;
+        case 'sales': loadSalesTable(); break;
+        case 'purchases': loadPurchasesTable(); break;
+        case 'inventory': loadInventoryTable(); break;
+        case 'expenses': loadExpensesTable(); break;
+        case 'logs': loadLogsTable(); break;
+        case 'backup': loadBackupHistory(); break;
+      }
     });
 
     // Modal close buttons
-    document.querySelectorAll('.modal-close').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const modal = btn.closest('.modal');
-        if (!modal) return;
-        if (modal.id === 'addPurchaseModal' && editingPurchaseId) {
-          editingPurchaseId = null;
-          el('purchaseModalTitle').textContent = 'New Purchase';
-          el('purchaseSubmitBtn').textContent = 'Add Purchase';
-          el('purchaseForm').reset();
-        }
-        closeModal(modal.id);
-      });
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-close')) {
+        const modal = e.target.closest('.modal');
+        if (modal) closeModal(modal.id);
+      }
     });
 
-    // Alert/Confirm modals buttons
-    el('alertOk').addEventListener('click', () => closeModal('alertDialog'));
-    el('confirmCancel').addEventListener('click', () => closeModal('confirmDialog'));
-
-    // Reports
-    document.querySelectorAll('.report-btn').forEach(btn => {
-      btn.addEventListener('click', () => { currentReportRange = null; generateReport(btn.dataset.report); });
-    });
-    el('exportPdfBtn').addEventListener('click', exportToPDF);
-    el('exportCsvBtn').addEventListener('click', exportToCSV);
-
-    // Date Range handling
-    el('reportDateRangeBtn').addEventListener('click', () => openModal('dateRangeModal'));
-    el('applyDateRangeBtn').addEventListener('click', async () => {
-      const from = el('dateFrom').value;
-      const to = el('dateTo').value;
-      if (!from || !to) { showAlert('Invalid Range', 'Please select both From and To dates.'); return; }
-      currentReportRange = { from, to };
-      closeModal('dateRangeModal');
-      if (currentReportKey) await generateReport(currentReportKey);
-    });
-
-    // Enhanced Backup buttons
-    el('chooseFolderBtn').addEventListener('click', chooseFolder);
-    el('manualBackupBtn').addEventListener('click', backupData);
-    el('manualRestoreBtn').addEventListener('click', restoreData);
-    el('restoreLocalBtn').addEventListener('click', () => el('restoreLocalInput').click());
-    el('restoreLocalInput').addEventListener('change', (e) => { if (e.target.files[0]) importLocalBackup(e.target.files[0]); });
-    
-    // Enhanced cloud sync buttons
-    el('forceSyncBtn').addEventListener('click', forceSync);
-    el('clearLocalDataBtn').addEventListener('click', clearLocalData);
-
-    // Sale Modal open
-    el('addSaleBtn').addEventListener('click', async () => {
-      openModal('addSaleModal');
+    // Add buttons
+    el('addSaleBtn')?.addEventListener('click', async () => {
+      el('saleForm').reset();
       el('drugsContainer').innerHTML = '';
       addDrugRow();
+      el('patientMRN').value = await generateNextMRN();
       setupPatientSearch();
-      if (!el('patientMRN').value) {
-        el('patientMRN').value = await generateNextMRN();
-      }
-      el('printReceiptBtn').onclick = () => {
-        const tmpSale = {
-          patientMrn: el('patientMRN').value.trim(),
-          drugs: Array.from(document.querySelectorAll('.drug-row')).map(row => ({
-            name: row.querySelector('[name="drugName"]')?.value?.trim(),
-            dose: row.querySelector('[name="drugDose"]')?.value?.trim(),
-            unit: row.querySelector('[name="drugUnit"]')?.value?.trim(),
-            quantity: parseFloat(row.querySelector('[name="drugQuantity"]')?.value) || 0
-          })).filter(d => d.name && d.dose && d.unit && d.quantity > 0),
-            totalPaid: parseFloat(el('totalPaid').value) || 0,
-            createdByEmail: currentUserEmail || currentUser?.role,
-            createdBy: currentUser?.role,
-            timestamp: new Date()
-          };
-        showReceiptPreview(tmpSale);
-      };
-    });
-    el('addDrugBtn').addEventListener('click', addDrugRow);
-
-    // Sale totals on change
-    document.addEventListener('input', (e) => {
-      if (e.target.matches('[name="drugQuantity"]')) calculateSaleTotal();
+      openModal('addSaleModal');
     });
 
-    // Sale submit
-    el('saleForm').addEventListener('submit', async (e) => {
+    el('addPurchaseBtn')?.addEventListener('click', () => {
+      el('purchaseForm').reset();
+      editingPurchaseId = null;
+      el('purchaseModalTitle').textContent = 'New Purchase';
+      el('purchaseSubmitBtn').textContent = 'Add Purchase';
+      el('purchaseId').value = '';
+      openModal('addPurchaseModal');
+    });
+
+    el('addExpenseBtn')?.addEventListener('click', () => {
+      el('expenseForm').reset();
+      openModal('addExpenseModal');
+    });
+
+    el('addDrugBtn')?.addEventListener('click', addDrugRow);
+
+    // Purchase calculation
+    el('purchaseQuantity')?.addEventListener('input', calculatePurchaseTotal);
+    el('purchaseUnitPrice')?.addEventListener('input', calculatePurchaseTotal);
+
+    // Form submissions
+    el('saleForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const drugs = Array.from(document.querySelectorAll('.drug-row')).map(row => ({
-        name: row.querySelector('[name="drugName"]')?.value?.trim(),
-        dose: row.querySelector('[name="drugDose"]')?.value?.trim(),
-        unit: row.querySelector('[name="drugUnit"]')?.value?.trim(),
-        quantity: parseFloat(row.querySelector('[name="drugQuantity"]')?.value) || 0
-      })).filter(d => d.name && d.dose && d.unit && d.quantity > 0);
+      const formData = new FormData(e.target);
+      const drugRows = document.querySelectorAll('.drug-row');
+      
+      if (!drugRows.length) {
+        showAlert('Validation Error', 'Please add at least one drug.');
+        return;
+      }
+
+      const drugs = [];
+      let hasValidDrug = false;
+      
+      for (const row of drugRows) {
+        const name = row.querySelector('[name="drugName"]')?.value?.trim();
+        const dose = row.querySelector('[name="drugDose"]')?.value?.trim();
+        const unit = row.querySelector('[name="drugUnit"]')?.value?.trim();
+        const quantity = parseFloat(row.querySelector('[name="drugQuantity"]')?.value) || 0;
+        
+        if (name && dose && unit && quantity > 0) {
+          drugs.push({ name, dose, unit, quantity });
+          hasValidDrug = true;
+        }
+      }
+
+      if (!hasValidDrug) {
+        showAlert('Validation Error', 'Please add at least one valid drug with quantity.');
+        return;
+      }
 
       const saleData = {
-        mrn: el('patientMRN').value.trim(),
-        patientName: el('patientName').value.trim(),
-        patientAge: parseInt(el('patientAge').value, 10),
-        patientSex: el('patientSex').value,
-        patientAddress: el('patientAddress').value.trim(),
-        diagnosis: el('patientDiagnosis').value.trim(),
-        drugs,
-        totalPaid: parseFloat(el('totalPaid').value) || 0
+        mrn: formData.get('patientMRN') || el('patientMRN').value,
+        patientName: formData.get('patientName') || el('patientName').value,
+        patientAge: parseInt(formData.get('patientAge') || el('patientAge').value),
+        patientSex: formData.get('patientSex') || el('patientSex').value,
+        patientAddress: formData.get('patientAddress') || el('patientAddress').value,
+        diagnosis: formData.get('patientDiagnosis') || el('patientDiagnosis').value,
+        totalPaid: parseFloat(formData.get('totalPaid') || el('totalPaid').value) || 0,
+        drugs
       };
+
+      // Validation
+      if (!saleData.mrn || saleData.mrn.length !== 5) {
+        showAlert('Validation Error', 'Please enter a valid 5-digit MRN.');
+        return;
+      }
+      if (!saleData.patientName) {
+        showAlert('Validation Error', 'Please enter patient name.');
+        return;
+      }
+      if (!saleData.totalPaid || saleData.totalPaid <= 0) {
+        showAlert('Validation Error', 'Please enter a valid payment amount.');
+        return;
+      }
 
       const result = await saveSale(saleData);
       if (result.success) {
         closeModal('addSaleModal');
-        e.target.reset();
-        await triggerDataSync(['sales', 'inventory', 'dashboard']);
         showToast('Sale recorded successfully', 'success');
-        showReceiptPreview({ ...result.record, patientMrn: saleData.mrn });
+        await triggerDataSync(['sales', 'dashboard', 'inventory']);
+        
+        // Ask if user wants to print receipt
+        showConfirm('Print Receipt', 'Sale recorded successfully. Would you like to print the receipt?', () => {
+          showReceiptPreview(result.record);
+        });
       }
     });
 
-    // Purchase modal open
-    el('addPurchaseBtn')?.addEventListener('click', () => {
-      editingPurchaseId = null;
-      el('purchaseModalTitle').textContent = 'New Purchase';
-      el('purchaseSubmitBtn').textContent = 'Add Purchase';
-      el('purchaseForm').reset();
-      openModal('addPurchaseModal');
-    });
-    el('purchaseQuantity').addEventListener('input', calculatePurchaseTotal);
-    el('purchaseUnitPrice').addEventListener('input', calculatePurchaseTotal);
-
-    el('purchaseForm').addEventListener('submit', async (e) => {
+    el('purchaseForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const data = {
-        drugName: el('purchaseDrugName').value.trim(),
-        dose: el('purchaseDose').value.trim(),
-        unit: el('purchaseUnit').value,
-        quantity: parseFloat(el('purchaseQuantity').value) || 0,
-        unitPrice: parseFloat(el('purchaseUnitPrice').value) || 0,
-        supplier: el('purchaseSupplier').value.trim(),
-        expiryDate: el('purchaseExpiryDate').value
+      const formData = new FormData(e.target);
+      
+      const purchaseData = {
+        drugName: formData.get('drugName') || el('purchaseDrugName').value,
+        dose: formData.get('dose') || el('purchaseDose').value,
+        unit: formData.get('unit') || el('purchaseUnit').value,
+        quantity: parseFloat(formData.get('quantity') || el('purchaseQuantity').value) || 0,
+        unitPrice: parseFloat(formData.get('unitPrice') || el('purchaseUnitPrice').value) || 0,
+        supplier: formData.get('supplier') || el('purchaseSupplier').value,
+        expiryDate: formData.get('expiryDate') || el('purchaseExpiryDate').value
       };
-      if (await savePurchase(data)) {
+
+      // Validation
+      if (!purchaseData.drugName || !purchaseData.dose || !purchaseData.unit) {
+        showAlert('Validation Error', 'Please fill in all drug information.');
+        return;
+      }
+      if (purchaseData.quantity <= 0 || purchaseData.unitPrice <= 0) {
+        showAlert('Validation Error', 'Please enter valid quantity and unit price.');
+        return;
+      }
+      if (!purchaseData.supplier) {
+        showAlert('Validation Error', 'Please enter supplier information.');
+        return;
+      }
+      if (!purchaseData.expiryDate) {
+        showAlert('Validation Error', 'Please enter expiry date.');
+        return;
+      }
+
+      const success = await savePurchase(purchaseData);
+      if (success) {
         closeModal('addPurchaseModal');
-        e.target.reset();
         await triggerDataSync(['purchases', 'inventory', 'dashboard']);
-        showToast('Purchase saved', 'success');
       }
     });
 
-    // Expense modal open/submit
-    el('addExpenseBtn')?.addEventListener('click', () => openModal('addExpenseModal'));
-    el('expenseForm').addEventListener('submit', async (e) => {
+    el('expenseForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const data = {
-        type: el('expenseType').value,
-        amount: parseFloat(el('expenseAmount').value) || 0,
-        description: el('expenseDescription').value.trim()
+      const formData = new FormData(e.target);
+      
+      const expenseData = {
+        type: formData.get('type') || el('expenseType').value,
+        amount: parseFloat(formData.get('amount') || el('expenseAmount').value) || 0,
+        description: formData.get('description') || el('expenseDescription').value
       };
-      if (await saveExpense(data)) {
+
+      // Validation
+      if (!expenseData.type) {
+        showAlert('Validation Error', 'Please select expense type.');
+        return;
+      }
+      if (expenseData.amount <= 0) {
+        showAlert('Validation Error', 'Please enter a valid amount.');
+        return;
+      }
+      if (!expenseData.description) {
+        showAlert('Validation Error', 'Please enter expense description.');
+        return;
+      }
+
+      const success = await saveExpense(expenseData);
+      if (success) {
         closeModal('addExpenseModal');
-        e.target.reset();
+        showToast('Expense recorded successfully', 'success');
         await triggerDataSync(['expenses', 'dashboard']);
-        showToast('Expense recorded', 'success');
+      }
+    });
+
+    // Authentication
+    el('loginForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = el('loginEmail').value;
+      const password = el('loginPassword').value;
+      
+      if (!email || !password) {
+        showAlert('Validation Error', 'Please enter both email and password.');
+        return;
+      }
+
+      const loginBtn = el('loginButtonText');
+      const spinner = el('loginSpinner');
+      
+      loginBtn.textContent = 'Signing in...';
+      spinner.style.display = 'block';
+
+      try {
+        const result = await authenticateUser(email, password);
+        if (result.success) {
+          currentUser = result.user;
+          currentUserEmail = result.user.email;
+          currentUserUUID = result.user.uuid;
+          
+    
+          // Initialize main app
+el('authScreen').classList.add('hidden');
+el('mainApp').classList.remove('hidden');
+el('userName').textContent = result.user.email;
+el('userRole').textContent = result.user.role;
+
+// Apply role restrictions and initialize charts for admin
+applyRoleRestrictions();
+initializeCharts();
+
+// Load dashboard (numbers + feed chart data)
+await triggerDataSync(['dashboard']);
+
+// Setup real-time sync and listeners
+await scheduleSyncNow('login-complete');
+updateOnlineStatusUI();
+       
+          
+          showToast(`Welcome back, ${result.user.role}!`, 'success');
+        } else {
+          showAlert('Login Failed', result.error);
+        }
+      } catch (e) {
+        console.error('Login error:', e);
+        showAlert('Error', 'Login failed. Please try again.');
+      } finally {
+        loginBtn.textContent = 'Sign In';
+        spinner.style.display = 'none';
+      }
+    });
+
+    el('signupForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = el('signupEmail').value;
+      const password = el('signupPassword').value;
+      const confirmPassword = el('signupConfirmPassword').value;
+      const role = el('signupRole').value;
+
+      if (!email || !password || !confirmPassword || !role) {
+        showAlert('Validation Error', 'Please fill in all fields.');
+        return;
+      }
+      if (password !== confirmPassword) {
+        showAlert('Validation Error', 'Passwords do not match.');
+        return;
+      }
+      if (password.length < 6) {
+        showAlert('Validation Error', 'Password must be at least 6 characters long.');
+        return;
+      }
+
+      const signupBtn = el('signupButtonText');
+      const spinner = el('signupSpinner');
+      
+      signupBtn.textContent = 'Creating account...';
+      spinner.style.display = 'block';
+
+      try {
+        const result = await signUpUser(email, password, role);
+        if (result.success) {
+          showToast(result.message, 'success');
+          toggleAuthMode(); // Switch back to login
+        } else {
+          showAlert('Signup Failed', result.error);
+        }
+      } catch (e) {
+        console.error('Signup error:', e);
+        showAlert('Error', 'Signup failed. Please try again.');
+      } finally {
+        signupBtn.textContent = 'Sign Up';
+        spinner.style.display = 'none';
+      }
+    });
+
+    el('toggleAuthMode')?.addEventListener('click', toggleAuthMode);
+
+    // Logout
+    el('logoutBtn')?.addEventListener('click', () => {
+      showConfirm('Logout', 'Are you sure you want to logout?', () => {
+        // Clean up
+        cleanupRealtimeListeners();
+        currentUser = null;
+        currentUserEmail = null;
+        currentUserUUID = null;
+        
+        // Reset UI
+        el('mainApp').classList.add('hidden');
+        el('authScreen').classList.remove('hidden');
+        el('loginForm').reset();
+        el('signupForm').reset();
+        
+        showToast('Logged out successfully', 'info');
+        updateOnlineStatusUI();
+      });
+    });
+
+    // Dark mode toggle
+    el('toggleDarkMode')?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      setDarkMode(!isDark);
+    });
+
+    // Reports
+    document.addEventListener('click', (e) => {
+      const reportBtn = e.target.closest('.report-btn');
+      if (!reportBtn) return;
+      const reportType = reportBtn.getAttribute('data-report');
+      generateReport(reportType);
+    });
+
+    el('exportPdfBtn')?.addEventListener('click', exportToPDF);
+    el('exportCsvBtn')?.addEventListener('click', exportToCSV);
+
+    // Date range for reports
+    el('reportDateRangeBtn')?.addEventListener('click', () => {
+      const today = new Date();
+      el('dateFrom').value = new Date(today.getTime() - 30*24*60*60*1000).toISOString().slice(0,10);
+      el('dateTo').value = today.toISOString().slice(0,10);
+      openModal('dateRangeModal');
+    });
+
+    el('applyDateRangeBtn')?.addEventListener('click', () => {
+      const from = el('dateFrom').value;
+      const to = el('dateTo').value;
+      if (from && to && currentReportKey) {
+        currentReportRange = { from, to };
+        generateReport(currentReportKey);
+        closeModal('dateRangeModal');
+      } else {
+        showAlert('Error', 'Please select valid date range.');
       }
     });
 
     // Filters
-    el('refreshInventoryBtn').addEventListener('click', loadInventoryTable);
-    el('inventorySearchFilter').addEventListener('input', loadInventoryTable);
-    el('inventoryStatusFilter').addEventListener('change', loadInventoryTable);
-    el('inventorySupplierFilter').addEventListener('input', loadInventoryTable);
-    el('salesDateFilter').addEventListener('change', loadSalesTable);
-    el('salesSearchFilter').addEventListener('input', loadSalesTable);
-    el('refreshLogsBtn')?.addEventListener('click', loadLogsTable);
+    el('salesDateFilter')?.addEventListener('change', loadSalesTable);
+    el('salesSearchFilter')?.addEventListener('input', debounce(loadSalesTable, 300));
+    el('inventorySearchFilter')?.addEventListener('input', debounce(loadInventoryTable, 300));
+    el('inventoryStatusFilter')?.addEventListener('change', loadInventoryTable);
+    el('inventorySupplierFilter')?.addEventListener('input', debounce(loadInventoryTable, 300));
+    el('refreshInventoryBtn')?.addEventListener('click', loadInventoryTable);
     el('logsUserFilter')?.addEventListener('change', loadLogsTable);
     el('logsActionFilter')?.addEventListener('change', loadLogsTable);
     el('logsDateFilter')?.addEventListener('change', loadLogsTable);
+    el('refreshLogsBtn')?.addEventListener('click', loadLogsTable);
 
-    // Enhanced keyboard shortcuts for power users
-    document.addEventListener('keydown', (e) => {
-      // Only handle shortcuts when not in input fields
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
-      
-      if (e.ctrlKey || e.metaKey) {
-        switch (e.key) {
-          case 's': // Ctrl+S for new sale
-            e.preventDefault();
-            if (currentUser && sectionActive('salesSection')) {
-              el('addSaleBtn')?.click();
-            }
-            break;
-          case 'p': // Ctrl+P for new purchase (admin only)
-            e.preventDefault();
-            if (currentUser?.role === 'admin' && sectionActive('purchasesSection')) {
-              el('addPurchaseBtn')?.click();
-            }
-            break;
-          case 'e': // Ctrl+E for new expense (admin only)
-            e.preventDefault();
-            if (currentUser?.role === 'admin' && sectionActive('expensesSection')) {
-              el('addExpenseBtn')?.click();
-            }
-            break;
-          case 'r': // Ctrl+R for refresh current section
-            e.preventDefault();
-            if (sectionActive('inventorySection')) loadInventoryTable();
-            else if (sectionActive('salesSection')) loadSalesTable();
-            else if (sectionActive('purchasesSection')) loadPurchasesTable();
-            else if (sectionActive('expensesSection')) loadExpensesTable();
-            else if (sectionActive('logsSection')) loadLogsTable();
-            else if (sectionActive('backupSection')) loadBackupHistory();
-            break;
-          case 'f': // Ctrl+F for force sync
-            e.preventDefault();
-            if (currentUser) forceSync();
-            break;
-        }
+    // Backup & Restore
+    el('chooseFolderBtn')?.addEventListener('click', chooseFolder);
+    el('manualBackupBtn')?.addEventListener('click', backupData);
+    el('manualRestoreBtn')?.addEventListener('click', restoreLatestBackup);
+    el('restoreLocalBtn')?.addEventListener('click', () => el('restoreLocalInput').click());
+    el('restoreLocalInput')?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) processBackupFile(file);
+    });
+    el('forceSyncBtn')?.addEventListener('click', forceSync);
+    el('clearLocalDataBtn')?.addEventListener('click', clearLocalData);
+
+    // Receipt and Print
+    el('printReceiptBtn')?.addEventListener('click', async () => {
+      const drugRows = document.querySelectorAll('.drug-row');
+      if (!drugRows.length) {
+        showAlert('Error', 'Please add drugs first.');
+        return;
       }
       
-      // Number keys for section navigation
-      if (e.altKey && !isNaN(e.key) && e.key !== '0') {
-        e.preventDefault();
-        const sections = ['dashboard', 'sales', 'purchases', 'inventory', 'expenses', 'reports', 'backup', 'logs'];
-        const index = parseInt(e.key) - 1;
-        if (sections[index]) {
-          const btn = document.querySelector(`[data-section="${sections[index]}"]`);
-          if (btn && (!btn.classList.contains('admin-only') || currentUser?.role === 'admin')) {
-            btn.click();
+      // Create a temporary sale object for preview
+      const tempSale = {
+        id: 'PREVIEW',
+        patientMrn: el('patientMRN').value,
+        totalPaid: parseFloat(el('totalPaid').value) || 0,
+        timestamp: new Date(),
+        createdByEmail: currentUserEmail,
+        drugs: []
+      };
+
+      for (const row of drugRows) {
+        const name = row.querySelector('[name="drugName"]')?.value?.trim();
+        const dose = row.querySelector('[name="drugDose"]')?.value?.trim();
+        const unit = row.querySelector('[name="drugUnit"]')?.value?.trim();
+        const quantity = parseFloat(row.querySelector('[name="drugQuantity"]')?.value) || 0;
+        if (name && dose && unit && quantity > 0) {
+          tempSale.drugs.push({ name, dose, unit, quantity });
+        }
+      }
+
+      showReceiptPreview(tempSale);
+    });
+
+    el('printReceiptAction')?.addEventListener('click', printReceipt);
+
+    // Alert and Confirm dialog handlers
+    el('alertOk')?.addEventListener('click', () => closeModal('alertDialog'));
+    el('confirmCancel')?.addEventListener('click', () => closeModal('confirmDialog'));
+
+    // Debounce utility
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // -------------- Initialization --------------
+    const initializeApp = async () => {
+      try {
+        // Initialize dark mode
+        initDarkMode();
+        
+        // Update datetime periodically
+        updateDateTime();
+        setInterval(updateDateTime, 30000);
+
+        // Initialize charts for admin users
+        setTimeout(initializeCharts, 100);
+
+        // Setup initial sync status
+        updateOnlineStatusUI();
+        updateCloudSyncStatus();
+
+        // Load backup history
+        await loadBackupHistory();
+
+        // Initialize folder status
+        updateFolderStatus();
+
+        // If user is already logged in (cached), auto-login
+        try {
+          const cachedUser = await localDB.users.orderBy('lastLogin').reverse().first();
+          if (cachedUser?.cachedCredentials) {
+            console.log('Found cached user, checking credentials...');
+            // Could implement auto-login here if desired
           }
+        } catch (e) {
+          console.log('No cached user found');
         }
+
+        console.log('Saladin Pharma initialized successfully');
+        
+      } catch (error) {
+        console.error('Initialization error:', error);
+        showAlert('Initialization Error', 'Failed to initialize the application. Please refresh the page.');
       }
-    });
+    };
 
-    // Handle visibility change for sync optimization
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        // App went to background - reduce sync frequency
-        if (syncTimer) clearTimeout(syncTimer);
-      } else {
-        // App came to foreground - trigger immediate sync if user is logged in
-        if (currentUser && navigator.onLine) {
-          scheduleSyncSoon('visibility-change');
-        }
-      }
-    });
+    // Start the application
+    document.addEventListener('DOMContentLoaded', initializeApp);
 
-    // Handle page unload - cleanup
-    window.addEventListener('beforeunload', () => {
-      cleanupRealtimeListeners();
-    });
-
-    // Error boundary for uncaught errors
+    // Additional error handling
     window.addEventListener('error', (e) => {
-      console.error('Uncaught error:', e.error);
-      showToast('An unexpected error occurred. Please refresh if issues persist.', 'error', 5000);
+      console.error('Global error:', e.error);
+      showToast('An unexpected error occurred', 'error');
     });
 
-    // Promise rejection handler
     window.addEventListener('unhandledrejection', (e) => {
       console.error('Unhandled promise rejection:', e.reason);
-      // Don't show user notification for sync errors as they are handled elsewhere
-      if (!e.reason?.message?.includes('Firebase') && !e.reason?.message?.includes('sync')) {
-        showToast('An unexpected error occurred. Please refresh if issues persist.', 'error', 5000);
-      }
+      e.preventDefault();
     });
 
+    // Expose some globals for debugging (only in development)
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      window.SaladinPharma = {
+        localDB,
+        currentUser,
+        generateReport,
+        fullSync,
+        showToast,
+        showAlert,
+        showConfirm
+      };
+    }
   </script>
 </body>
 </html>
+         
