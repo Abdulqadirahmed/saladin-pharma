@@ -15,7 +15,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Saladin Pharma" />
   <meta name="theme-color" content="#5D5CDE" />
-  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU2FsYWRpbiBQaGFybWEiLCJzaG9ydF9uYW1lIjoiU2FsYWRpbiIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjNUQ1Q0RFIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3g1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIZHBaSFJvUFNJeE1qZ2lJR2hsYVdkb2REMGlNVEk0SWo0OGNHRjBhQ0JtYVd4c1BTSWpOVVExUTBSRklpQmtQU0p0TnpRZ05UTnpNakEyTWpKc05UWnlNalF0TlRaeU1qUXROVFp5TWpSNmJUWXhNams2T1RaQk1Ua3lNVGt5TURBZ01ERXdJaUF2UGp3dmMzWm5QZz09IiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJzaXplcyI6IjEyOHgxMjgifV19" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-touch-fullscreen" content="yes" />
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json" />
+  
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" sizes="72x72" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MiIgaGVpZ2h0PSI3MiIgdmlld0JveD0iMCAwIDcyIDcyIj48Y2lyY2xlIGN4PSIzNiIgY3k9IjM2IiByPSIzNCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjM2IiB5PSI0NCIgZm9udC1zaXplPSIzNiIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+UzwvdGV4dD48L3N2Zz4=" />
+  <link rel="apple-touch-icon" sizes="96x96" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDk2IDk2Ij48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0NCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjQ4IiB5PSI1OCIgZm9udC1zaXplPSI0OCIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+UzwvdGV4dD48L3N2Zz4=" />
+  <link rel="apple-touch-icon" sizes="128x128" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+PGNpcmNsZSBjeD0iNjQiIGN5PSI2NCIgcj0iNTgiIGZpbGw9IiM3QzdGRkYiLz48dGV4dCB4PSI2NCIgeT0iNzgiIGZvbnQtc2l6ZT0iNjQiIGZpbGw9IiM1RDVDREU4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtd2VpZ2h0PSJib2xkIj5TPC90ZXh0Pjwvc3ZnPg==" />
+  <link rel="apple-touch-icon" sizes="192x192" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PGNpcmNsZSBjeD0iOTYiIGN5PSI5NiIgcj0iODgiIGZpbGw9IiM3QzdGRkYiLz48dGV4dCB4PSI5NiIgeT0iMTE2IiBmb250LXNpemU9Ijk2IiBmaWxsPSIjNUQ1Q0RFOCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+UzwvdGV4dD48L3N2Zz4=" />
+  
+  <!-- Favicon -->
   <link
     rel="icon"
     href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNhbGFkaW4gUGhhcm1hIj48Y2lyY2xlIGN4PSI2NCIgY3k9IjY0IiByPSI2MCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjY0IiB5PSI3MiIgZm9udC1zaXplPSI2MCIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TPC90ZXh0Pjwvc3ZnPg=="
@@ -294,9 +306,51 @@
       transition: transform 0.3s ease; 
     }
     .sync-notification.show { transform: translateY(0); }
+
+    /* PWA Update Banner */
+    .pwa-update-banner {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1200;
+      background: linear-gradient(135deg, #5D5CDE 0%, #4F46E5 100%);
+      color: white; padding: 12px 16px; font-size: 14px; font-weight: 700;
+      display: none; align-items: center; justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .pwa-update-banner.show { display: flex; }
+    .pwa-update-banner button {
+      background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);
+      padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .pwa-update-banner button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Offline indicator */
+    .offline-indicator {
+      position: fixed; bottom: 16px; left: 16px; z-index: 1100;
+      background: #F59E0B; color: white; padding: 8px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; display: none; align-items: center; gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .offline-indicator.show { display: flex; }
   </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 min-h-full">
+  <!-- PWA Update Banner -->
+  <div id="pwaUpdateBanner" class="pwa-update-banner">
+    <span>📱 New version available! Update for the latest features.</span>
+    <div>
+      <button id="updateAppBtn">Update Now</button>
+      <button id="dismissUpdateBtn" style="margin-left: 8px;">Later</button>
+    </div>
+  </div>
+
+  <!-- Offline Indicator -->
+  <div id="offlineIndicator" class="offline-indicator">
+    <span>🔌</span>
+    <span>Working offline</span>
+  </div>
+
   <!-- Toasts -->
   <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
@@ -1198,47 +1252,107 @@
   </div>
 
   <script>
-    // -------------- Offline-first PWA: Service Worker registration --------------
+    // -------------- Enhanced PWA: Service Worker registration --------------
     (function registerSW() {
       if ('serviceWorker' in navigator) {
-        const swBlob = new Blob([`
-          const CACHE_NAME = 'saladin-pharma-cache-v1';
-          const OFFLINE_URL = '/';
-          self.addEventListener('install', (event) => {
-            event.waitUntil((async () => {
-              const cache = await caches.open(CACHE_NAME);
-              await cache.addAll([
-                '/',
-                location.href
-              ]);
-              self.skipWaiting();
-            })());
-          });
-          self.addEventListener('activate', (event) => {
-            event.waitUntil(self.clients.claim());
-          });
-          self.addEventListener('fetch', (event) => {
-            const req = event.request;
-            if (req.method !== 'GET') return;
-            event.respondWith((async () => {
-              try {
-                const net = await fetch(req);
-                const cache = await caches.open(CACHE_NAME);
-                cache.put(req, net.clone());
-                return net;
-              } catch (e) {
-                const cache = await caches.open(CACHE_NAME);
-                const cached = await cache.match(req);
-                if (cached) return cached;
-                return cache.match(OFFLINE_URL);
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+          .then((registration) => {
+            console.log('SW registered:', registration.scope);
+            
+            // Handle updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // New SW is available, show update notification
+                  showUpdateAvailable();
+                }
+              });
+            });
+
+            // Register for background sync
+            if ('sync' in window.ServiceWorkerRegistration.prototype) {
+              registration.sync.register('pharmacy-data-sync').catch(console.error);
+            }
+          })
+          .catch(error => console.error('SW registration failed:', error));
+
+        // Listen for SW messages
+        navigator.serviceWorker.addEventListener('message', event => {
+          const { type, payload } = event.data;
+          switch (type) {
+            case 'SYNC_BACKGROUND':
+              // Handle background sync completion
+              if (payload.success) {
+                updateSyncStatus('online', '🟢', 'Synced', false);
+                showToast('Background sync completed', 'success');
               }
-            })());
-          });
-        `], { type: 'text/javascript' });
-        const swUrl = URL.createObjectURL(swBlob);
-        navigator.serviceWorker.register(swUrl).catch(console.error);
+              break;
+            case 'OFFLINE_FALLBACK':
+              updateSyncStatus('offline', '🔴', 'Offline Ready', false);
+              break;
+          }
+        });
+
+        // Handle fetch events from service worker
+        navigator.serviceWorker.addEventListener('message', event => {
+          if (event.data && event.data.type === 'CACHE_UPDATED') {
+            // Handle cache updates
+            console.log('Cache updated:', event.data.url);
+          }
+        });
       }
     })();
+
+    // Show update available notification
+    const showUpdateAvailable = () => {
+      const banner = document.getElementById('pwaUpdateBanner');
+      if (banner) {
+        banner.classList.add('show');
+      }
+    };
+
+    // Handle PWA update
+    document.getElementById('updateAppBtn')?.addEventListener('click', () => {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(registration => {
+          if (registration && registration.waiting) {
+            // Tell the SW to skip waiting
+            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            window.location.reload();
+          }
+        });
+      }
+    });
+
+    document.getElementById('dismissUpdateBtn')?.addEventListener('click', () => {
+      document.getElementById('pwaUpdateBanner').classList.remove('show');
+    });
+
+    // Enhanced offline detection
+    const updateOfflineStatus = () => {
+      const offlineIndicator = document.getElementById('offlineIndicator');
+      if (navigator.onLine) {
+        offlineIndicator.classList.remove('show');
+      } else {
+        offlineIndicator.classList.add('show');
+      }
+    };
+
+    window.addEventListener('online', () => {
+      updateOfflineStatus();
+      // Trigger background sync when coming online
+      if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.sync.register('pharmacy-data-sync');
+        });
+      }
+    });
+    
+    window.addEventListener('offline', updateOfflineStatus);
+
+    // Initialize offline status
+    updateOfflineStatus();
 
     // -------------- Global State --------------
     let currentUser = null;
@@ -3530,7 +3644,7 @@
       } catch (e) { console.error('loadInventory', e); }
     };
 
-    // -------------- Expenses --------------
+        // -------------- Expenses --------------
     const loadExpensesTable = async () => {
       try {
         const expenses = await localDB.expenses.orderBy('timestamp').reverse().toArray();
@@ -4083,8 +4197,8 @@
         </head>
         <body>
           <div class="no-print">
-            <button onclick="window.print()" style="background: #5D5CDE; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">ð¨ï¸ Print Receipt</button>
-            <button onclick="window.close()" style="background: #6B7280; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-left: 10px;">â Close</button>
+            <button onclick="window.print()" style="background: #5D5CDE; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">ð¨ï¸ Print Receipt</button>
+            <button onclick="window.close()" style="background: #6B7280; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-left: 10px;">â Close</button>
           </div>
           ${receiptContent.innerHTML}
         </body>
@@ -4597,4 +4711,3 @@ updateOnlineStatusUI();
   </script>
 </body>
 </html>
-         
