@@ -1,459 +1,578 @@
-// sw.js - Perfect Service Worker for Saladin Pharma
-const CACHE_NAME = 'saladin-pharma-v1.0';
-const DATA_CACHE_NAME = 'saladin-pharma-data-v1.0';
+// sw.js - Persistent Offline-First Service Worker
+const CACHE_NAME = 'saladin-pharma-persistent-v1.0.3';
+const DYNAMIC_CACHE = 'saladin-pharma-dynamic-v1';
+const CRITICAL_CACHE = 'saladin-pharma-critical-v1';
 
-// Exact assets from your HTML
-const STATIC_ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  // Tailwind CSS
-  'https://cdn.tailwindcss.com',
-  // Dexie (your exact version)
-  'https://unpkg.com/dexie@3.2.4/dist/dexie.min.js',
-  // Chart.js
-  'https://cdn.jsdelivr.net/npm/chart.js',
-  // jsPDF (your exact version)
-  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-  // Inter font (from your CSS)
-  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap',
-  'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2',
-  // Your app icons (base64 encoded)
-  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MiIgaGVpZ2h0PSI3MiIgdmlld0JveD0iMCAwIDcyIDcyIj48Y2lyY2xlIGN4PSIzNiIgY3k9IjM2IiByPSIzNCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjM2IiB5PSI0NCIgZm9udC1zaXplPSIzNiIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+UzwvdGV4dD48L3N2Zz4='
+// Get the correct base path for GitHub Pages
+const getBasePath = () => {
+  const path = self.location.pathname;
+  const segments = path.split('/').filter(Boolean);
+  return segments.length > 0 ? `/${segments[0]}/` : '/';
+};
+
+const BASE_PATH = getBasePath();
+
+// CRITICAL assets that must NEVER be evicted
+const CRITICAL_ASSETS = [
+  `${BASE_PATH}`,
+  `${BASE_PATH}index.html`
 ];
 
-// Firebase specific URLs (from your HTML)
-const FIREBASE_URLS = [
+// Core assets needed for offline functionality
+const CORE_ASSETS = [
+  `${BASE_PATH}manifest.json`,
+  'https://unpkg.com/dexie@3.2.4/dist/dexie.min.js', // Essential for data storage
+  'https://cdn.tailwindcss.com' // Essential for UI
+];
+
+// Extended assets (nice to have but can be refetched)
+const EXTENDED_ASSETS = [
+  'https://cdn.jsdelivr.net/npm/chart.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
   'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js',
   'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js',
-  'https://abdo-pharma-default-rtdb.firebaseio.com'
+  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'
 ];
 
-// Install Event - Cache static assets
+// Install event - Cache critical assets first
 self.addEventListener('install', event => {
-  console.log('[SW] Installing service worker...');
+  console.log('SW: Installing with persistent cache strategy...');
   
   event.waitUntil(
     Promise.all([
-      // Cache static assets
-      caches.open(CACHE_NAME).then(cache => {
-        console.log('[SW] Caching static assets...');
-        return cache.addAll(STATIC_ASSETS.map(url => {
-          return new Request(url, {
-            mode: url.startsWith('http') ? 'cors' : 'same-origin',
-            credentials: 'omit'
-          });
-        }));
+      // Cache critical assets that MUST persist
+      caches.open(CRITICAL_CACHE).then(cache => {
+        console.log('SW: Caching critical assets...');
+        return cache.addAll(CRITICAL_ASSETS);
       }),
-      // Pre-cache Firebase assets
-      caches.open(DATA_CACHE_NAME).then(cache => {
-        console.log('[SW] Pre-caching Firebase assets...');
-        return cache.addAll(FIREBASE_URLS.slice(0, 2).map(url => {
-          return new Request(url, { mode: 'cors', credentials: 'omit' });
-        }));
+      
+      // Cache core assets
+      caches.open(CACHE_NAME).then(cache => {
+        console.log('SW: Caching core assets...');
+        return cache.addAll(CORE_ASSETS);
+      }),
+      
+      // Cache extended assets (non-blocking)
+      caches.open(CACHE_NAME).then(cache => {
+        console.log('SW: Caching extended assets...');
+        return Promise.allSettled(
+          EXTENDED_ASSETS.map(url => 
+            cache.add(url).catch(err => {
+              console.warn('SW: Failed to cache:', url, err);
+              return null;
+            })
+          )
+        );
       })
-    ])
-    .then(() => {
-      console.log('[SW] Installation complete, skipping waiting...');
+    ]).then(() => {
+      console.log('SW: All critical assets cached successfully');
+      return self.skipWaiting();
+    }).catch(error => {
+      console.error('SW: Critical cache installation failed:', error);
+      // Still skip waiting to activate, app might work with partial cache
       return self.skipWaiting();
     })
-    .catch(error => {
-      console.error('[SW] Installation failed:', error);
-    })
   );
 });
 
-// Activate Event - Clean up old caches
+// Activate event - Aggressive cache persistence
 self.addEventListener('activate', event => {
-  console.log('[SW] Activating service worker...');
+  console.log('SW: Activating with cache persistence...');
   
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME && cacheName !== DATA_CACHE_NAME) {
-            console.log('[SW] Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-    .then(() => {
-      console.log('[SW] Activation complete, claiming clients...');
-      return self.clients.claim();
+    Promise.all([
+      // Request persistent storage to prevent eviction
+      requestPersistentStorage(),
+      
+      // Clean old caches but preserve critical ones
+      cleanupOldCaches(),
+      
+      // Take control immediately
+      self.clients.claim(),
+      
+      // Preload critical app shell
+      preloadAppShell()
+    ]).then(() => {
+      console.log('SW: Activation complete with persistence');
+      return notifyClientsReady();
     })
   );
 });
 
-// Fetch Event - Implement offline-first strategy
+// Request persistent storage to prevent cache eviction
+async function requestPersistentStorage() {
+  try {
+    if ('storage' in navigator && 'persist' in navigator.storage) {
+      const isPersistent = await navigator.storage.persist();
+      console.log('SW: Persistent storage granted:', isPersistent);
+      
+      // Check storage usage
+      if ('estimate' in navigator.storage) {
+        const estimate = await navigator.storage.estimate();
+        console.log('SW: Storage estimate:', {
+          usage: Math.round(estimate.usage / 1024 / 1024) + ' MB',
+          quota: Math.round(estimate.quota / 1024 / 1024) + ' MB',
+          percentage: Math.round((estimate.usage / estimate.quota) * 100) + '%'
+        });
+      }
+      
+      return isPersistent;
+    }
+    return false;
+  } catch (error) {
+    console.error('SW: Persistent storage request failed:', error);
+    return false;
+  }
+}
+
+// Clean old caches but preserve critical ones
+async function cleanupOldCaches() {
+  try {
+    const cacheNames = await caches.keys();
+    const keepCaches = [CACHE_NAME, DYNAMIC_CACHE, CRITICAL_CACHE];
+    
+    await Promise.all(
+      cacheNames.map(cacheName => {
+        if (!keepCaches.includes(cacheName)) {
+          console.log('SW: Deleting old cache:', cacheName);
+          return caches.delete(cacheName);
+        }
+      })
+    );
+  } catch (error) {
+    console.error('SW: Cache cleanup failed:', error);
+  }
+}
+
+// Preload critical app shell to ensure offline availability
+async function preloadAppShell() {
+  try {
+    const cache = await caches.open(CRITICAL_CACHE);
+    
+    // Ensure critical resources are always fresh and available
+    for (const url of CRITICAL_ASSETS) {
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          await cache.put(url, response);
+        }
+      } catch (error) {
+        console.warn('SW: Failed to refresh critical asset:', url);
+      }
+    }
+  } catch (error) {
+    console.error('SW: App shell preload failed:', error);
+  }
+}
+
+// Notify clients that SW is ready
+async function notifyClientsReady() {
+  try {
+    const clients = await self.clients.matchAll();
+    clients.forEach(client => {
+      client.postMessage({ 
+        type: 'SW_READY',
+        persistent: true,
+        basePath: BASE_PATH 
+      });
+    });
+  } catch (error) {
+    console.error('SW: Client notification failed:', error);
+  }
+}
+
+// Enhanced fetch handler with robust offline support
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
-  
+
   // Skip non-GET requests
-  if (request.method !== 'GET') return;
-  
-  // Skip chrome-extension and other non-http(s) requests
-  if (!url.protocol.startsWith('http')) return;
-
-  // Firebase Realtime Database - Network first with fallback
-  if (url.hostname.includes('firebaseio.com') || url.pathname.includes('firebase')) {
-    event.respondWith(handleFirebaseRequest(request));
+  if (request.method !== 'GET') {
     return;
   }
 
-  // Firebase SDK files - Cache first
-  if (url.hostname.includes('gstatic.com') && url.pathname.includes('firebasejs')) {
-    event.respondWith(handleFirebaseSDK(request));
+  // Skip unsupported protocols
+  if (!url.protocol.startsWith('http')) {
     return;
   }
 
-  // CDN assets (Tailwind, Chart.js, etc.) - Cache first with network fallback
-  if (isCDNAsset(url)) {
-    event.respondWith(handleCDNAsset(request));
-    return;
+  // Route different request types
+  if (isCriticalRequest(url)) {
+    event.respondWith(criticalAssetStrategy(request));
+  } else if (isAppRequest(url)) {
+    event.respondWith(appShellStrategy(request));
+  } else if (isStaticAsset(url)) {
+    event.respondWith(staticAssetStrategy(request));
+  } else if (isExternalCDN(url)) {
+    event.respondWith(cdnStrategy(request));
+  } else if (isFirebaseAPI(url)) {
+    event.respondWith(apiStrategy(request));
+  } else {
+    event.respondWith(defaultStrategy(request));
   }
-
-  // App shell (HTML, CSS, JS) - Cache first
-  if (isAppShell(request)) {
-    event.respondWith(handleAppShell(request));
-    return;
-  }
-
-  // Everything else - Network first
-  event.respondWith(handleDefault(request));
 });
 
-// Handle Firebase Realtime Database requests
-async function handleFirebaseRequest(request) {
-  const url = new URL(request.url);
-  
+// Critical Asset Strategy - NEVER fail offline
+async function criticalAssetStrategy(request) {
   try {
-    console.log('[SW] Firebase request:', url.pathname);
+    // Always try cache first for critical assets
+    let response = await caches.match(request, { cacheName: CRITICAL_CACHE });
     
-    // Always try network first for real-time data
-    const networkResponse = await fetch(request);
+    if (response) {
+      console.log('SW: Serving critical asset from cache:', request.url);
+      return response;
+    }
+
+    // Fallback to other caches
+    response = await caches.match(request);
+    if (response) {
+      console.log('SW: Serving critical asset from general cache:', request.url);
+      return response;
+    }
+
+    // Network as last resort
+    response = await fetch(request);
+    if (response.ok) {
+      const cache = await caches.open(CRITICAL_CACHE);
+      cache.put(request, response.clone());
+    }
+    return response;
+
+  } catch (error) {
+    console.error('SW: Critical asset failed:', request.url, error);
     
-    if (networkResponse.ok) {
-      // Cache successful responses for offline fallback
-      const cache = await caches.open(DATA_CACHE_NAME);
-      const responseClone = networkResponse.clone();
-      
-      // Only cache GET requests for Firebase data
-      if (request.method === 'GET') {
-        await cache.put(request, responseClone);
-      }
-      
-      console.log('[SW] Firebase response cached');
-      return networkResponse;
+    // Return a basic offline shell for HTML requests
+    if (request.headers.get('accept')?.includes('text/html')) {
+      return new Response(
+        createOfflineFallbackHTML(),
+        { 
+          headers: { 'Content-Type': 'text/html' },
+          status: 200 
+        }
+      );
     }
     
-    throw new Error(`Network response not ok: ${networkResponse.status}`);
+    throw error;
+  }
+}
+
+// App Shell Strategy - Robust offline support
+async function appShellStrategy(request) {
+  try {
+    // Check critical cache first
+    let response = await caches.match(request, { cacheName: CRITICAL_CACHE });
+    if (response) {
+      console.log('SW: Serving app shell from critical cache');
+      return response;
+    }
+
+    // Try network with short timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
     
+    try {
+      response = await fetch(request, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      
+      if (response.ok) {
+        const cache = await caches.open(CRITICAL_CACHE);
+        cache.put(request, response.clone());
+        return response;
+      }
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      console.log('SW: Network timeout/failure, using cache fallback');
+    }
+
+    // Fallback to any cached version
+    response = await caches.match(request);
+    if (response) {
+      return response;
+    }
+
+    // Ultimate fallback - serve index.html for navigation requests
+    if (request.mode === 'navigate') {
+      const indexResponse = await caches.match(`${BASE_PATH}index.html`);
+      if (indexResponse) {
+        return indexResponse;
+      }
+    }
+
+    throw new Error('No cached version available');
+
   } catch (error) {
-    console.log('[SW] Firebase network failed, trying cache...', error.message);
-    
-    // Try to get from cache
-    const cache = await caches.open(DATA_CACHE_NAME);
-    const cachedResponse = await cache.match(request);
-    
+    console.error('SW: App shell strategy failed:', error);
+    return new Response(createOfflineFallbackHTML(), {
+      headers: { 'Content-Type': 'text/html' },
+      status: 200
+    });
+  }
+}
+
+// Static Asset Strategy - Cache first with network update
+async function staticAssetStrategy(request) {
+  try {
+    const cachedResponse = await caches.match(request);
     if (cachedResponse) {
-      console.log('[SW] Serving Firebase data from cache');
+      // Serve from cache immediately
+      updateCacheInBackground(request);
       return cachedResponse;
     }
-    
-    // Return offline indicator for your app to handle
-    console.log('[SW] No cached Firebase data, returning offline response');
-    return new Response(JSON.stringify({
-      offline: true,
-      timestamp: Date.now(),
-      error: 'No network connection and no cached data available'
-    }), {
-      status: 200,
-      headers: { 
-        'Content-Type': 'application/json',
-        'X-SW-Offline': 'true'
-      }
-    });
-  }
-}
 
-// Handle Firebase SDK files
-async function handleFirebaseSDK(request) {
-  const cache = await caches.open(DATA_CACHE_NAME);
-  const cachedResponse = await cache.match(request);
-  
-  if (cachedResponse) {
-    console.log('[SW] Serving Firebase SDK from cache');
-    return cachedResponse;
-  }
-  
-  try {
     const networkResponse = await fetch(request);
     if (networkResponse.ok) {
-      await cache.put(request, networkResponse.clone());
-      console.log('[SW] Firebase SDK cached');
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
     }
     return networkResponse;
+
   } catch (error) {
-    console.error('[SW] Failed to fetch Firebase SDK:', error);
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
     throw error;
   }
 }
 
-// Handle CDN assets (Tailwind, Chart.js, etc.)
-async function handleCDNAsset(request) {
-  const cache = await caches.open(CACHE_NAME);
-  const cachedResponse = await cache.match(request);
-  
-  if (cachedResponse) {
-    console.log('[SW] Serving CDN asset from cache:', request.url);
-    return cachedResponse;
-  }
-  
+// CDN Strategy - Aggressive caching
+async function cdnStrategy(request) {
   try {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
     const networkResponse = await fetch(request);
     if (networkResponse.ok) {
-      await cache.put(request, networkResponse.clone());
-      console.log('[SW] CDN asset cached:', request.url);
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
     }
     return networkResponse;
+
   } catch (error) {
-    console.error('[SW] Failed to fetch CDN asset:', request.url, error);
-    
-    // Return a minimal fallback for CSS/JS
-    if (request.url.includes('tailwindcss')) {
-      return new Response('/* Tailwind CSS offline fallback */', {
-        headers: { 'Content-Type': 'text/css' }
-      });
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
     }
-    
     throw error;
   }
 }
 
-// Handle app shell (your HTML file)
-async function handleAppShell(request) {
-  const cache = await caches.open(CACHE_NAME);
-  const cachedResponse = await cache.match(request);
-  
-  if (cachedResponse) {
-    console.log('[SW] Serving app shell from cache');
-    return cachedResponse;
-  }
-  
+// API Strategy - Network first with cache fallback
+async function apiStrategy(request) {
   try {
     const networkResponse = await fetch(request);
     if (networkResponse.ok) {
-      await cache.put(request, networkResponse.clone());
+      const cache = await caches.open(DYNAMIC_CACHE);
+      cache.put(request, networkResponse.clone());
     }
     return networkResponse;
+
   } catch (error) {
-    console.error('[SW] App shell network failed:', error);
-    
-    // Try to serve the cached index.html as fallback
-    const indexResponse = await cache.match('./index.html');
-    if (indexResponse) {
-      return indexResponse;
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      console.log('SW: Serving API response from cache during offline');
+      return cachedResponse;
     }
-    
-    // Ultimate fallback
-    return new Response(`
-      <!DOCTYPE html>
-      <html><head><title>Saladin Pharma - Offline</title></head>
-      <body style="font-family:Inter,Arial,sans-serif;text-align:center;padding:50px;background:#f9fafb;">
-        <h1 style="color:#5D5CDE;">🔌 Saladin Pharma</h1>
-        <p>You're offline and the app couldn't load from cache.</p>
-        <p>Please check your connection and try again.</p>
-        <button onclick="location.reload()" style="background:#5D5CDE;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">Retry</button>
-      </body></html>
-    `, {
-      status: 200,
-      headers: { 'Content-Type': 'text/html' }
-    });
+    throw error;
   }
 }
 
-// Handle everything else with network first
-async function handleDefault(request) {
+// Default Strategy
+async function defaultStrategy(request) {
   try {
     return await fetch(request);
   } catch (error) {
-    console.log('[SW] Network failed for:', request.url);
-    
-    // Try cache as fallback
-    const cache = await caches.open(CACHE_NAME);
-    const cachedResponse = await cache.match(request);
-    
+    const cachedResponse = await caches.match(request);
     if (cachedResponse) {
       return cachedResponse;
     }
-    
     throw error;
   }
 }
 
-// Background Sync - Handle your pharmacy data sync
-self.addEventListener('sync', event => {
-  console.log('[SW] Background sync event:', event.tag);
-  
-  if (event.tag === 'pharmacy-data-sync') {
-    event.waitUntil(handlePharmacySync());
-  }
-});
-
-async function handlePharmacySync() {
-  console.log('[SW] Handling pharmacy background sync...');
-  
-  try {
-    // Notify all clients that background sync started
-    const clients = await self.clients.matchAll();
-    
-    clients.forEach(client => {
-      client.postMessage({
-        type: 'SYNC_BACKGROUND',
-        payload: { status: 'started', timestamp: Date.now() }
+// Update cache in background without blocking response
+function updateCacheInBackground(request) {
+  fetch(request).then(response => {
+    if (response.ok) {
+      caches.open(CACHE_NAME).then(cache => {
+        cache.put(request, response);
       });
-    });
-    
-    // The actual sync is handled by your main app
-    // We just trigger it and wait a bit
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Notify completion
-    clients.forEach(client => {
-      client.postMessage({
-        type: 'SYNC_BACKGROUND',
-        payload: { success: true, timestamp: Date.now() }
-      });
-    });
-    
-    console.log('[SW] Background sync completed');
-    
-  } catch (error) {
-    console.error('[SW] Background sync failed:', error);
-    
-    // Notify failure
-    const clients = await self.clients.matchAll();
-    clients.forEach(client => {
-      client.postMessage({
-        type: 'SYNC_BACKGROUND',
-        payload: { success: false, error: error.message, timestamp: Date.now() }
-      });
-    });
-  }
+    }
+  }).catch(() => {
+    // Ignore background update failures
+  });
 }
 
-// Handle messages from your main app
+// Helper Functions
+function isCriticalRequest(url) {
+  return CRITICAL_ASSETS.some(asset => url.href.endsWith(asset.replace(BASE_PATH, '')));
+}
+
+function isAppRequest(url) {
+  return (url.origin === self.location.origin && 
+          (url.pathname === BASE_PATH || 
+           url.pathname === `${BASE_PATH}index.html` ||
+           url.pathname.startsWith(BASE_PATH) && url.pathname.endsWith('.html')));
+}
+
+function isStaticAsset(url) {
+  const extensions = ['.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.woff', '.woff2', '.ttf', '.json'];
+  return extensions.some(ext => url.pathname.toLowerCase().endsWith(ext));
+}
+
+function isExternalCDN(url) {
+  const cdnDomains = [
+    'cdn.tailwindcss.com',
+    'unpkg.com',
+    'cdn.jsdelivr.net',
+    'cdnjs.cloudflare.com',
+    'fonts.googleapis.com',
+    'fonts.gstatic.com',
+    'www.gstatic.com'
+  ];
+  return cdnDomains.some(domain => url.hostname.includes(domain));
+}
+
+function isFirebaseAPI(url) {
+  return url.hostname.includes('firebase') || url.hostname.includes('firebaseio.com');
+}
+
+// Create offline fallback HTML
+function createOfflineFallbackHTML() {
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Saladin Pharma - Offline</title>
+      <style>
+        body { 
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          margin: 0; padding: 40px 20px; text-align: center; 
+          background: linear-gradient(135deg, #5D5CDE 0%, #4F46E5 100%);
+          color: white; min-height: 100vh; display: flex;
+          flex-direction: column; justify-content: center; align-items: center;
+        }
+        .logo { font-size: 48px; margin-bottom: 20px; }
+        h1 { font-size: 24px; margin-bottom: 10px; }
+        p { font-size: 16px; opacity: 0.9; margin-bottom: 30px; }
+        button { 
+          background: rgba(255,255,255,0.2); color: white; 
+          border: 1px solid rgba(255,255,255,0.3); padding: 12px 24px; 
+          border-radius: 8px; font-size: 16px; cursor: pointer;
+          backdrop-filter: blur(10px);
+        }
+        button:hover { background: rgba(255,255,255,0.3); }
+        .status { margin-top: 20px; font-size: 14px; opacity: 0.8; }
+      </style>
+    </head>
+    <body>
+      <div class="logo">⚕️</div>
+      <h1>Saladin Pharma</h1>
+      <p>You're currently offline, but the app is cached and ready to use!</p>
+      <button onclick="window.location.reload()">Try Again</button>
+      <div class="status">App is running in offline mode</div>
+      <script>
+        // Auto-retry when back online
+        window.addEventListener('online', () => {
+          window.location.reload();
+        });
+      </script>
+    </body>
+    </html>
+  `;
+}
+
+// Periodic cache refresh to maintain freshness
+setInterval(async () => {
+  try {
+    // Only refresh if we have clients (app is being used)
+    const clients = await self.clients.matchAll();
+    if (clients.length > 0 && navigator.onLine) {
+      console.log('SW: Performing periodic cache refresh...');
+      
+      for (const asset of CRITICAL_ASSETS) {
+        try {
+          const response = await fetch(asset);
+          if (response.ok) {
+            const cache = await caches.open(CRITICAL_CACHE);
+            await cache.put(asset, response);
+          }
+        } catch (error) {
+          console.warn('SW: Periodic refresh failed for:', asset);
+        }
+      }
+    }
+  } catch (error) {
+    console.error('SW: Periodic cache refresh failed:', error);
+  }
+}, 300000); // Every 5 minutes
+
+// Enhanced message handling
 self.addEventListener('message', event => {
-  console.log('[SW] Received message:', event.data);
-  
-  const { type, data } = event.data || {};
+  const { type, payload } = event.data || {};
   
   switch (type) {
     case 'SKIP_WAITING':
       self.skipWaiting();
       break;
       
-    case 'CACHE_URLS':
-      // Cache additional URLs requested by your app
-      handleCacheUrls(data.urls, event);
+    case 'CLAIM_CLIENTS':
+      self.clients.claim();
       break;
       
-    case 'CLEAR_CACHE':
-      // Clear cache when requested
-      handleClearCache(event);
+    case 'REFRESH_CACHE':
+      refreshCriticalCache();
       break;
       
-    default:
-      console.log('[SW] Unknown message type:', type);
+    case 'GET_CACHE_STATUS':
+      getCacheStatus().then(status => {
+        event.ports[0]?.postMessage(status);
+      });
+      break;
   }
 });
 
-// Helper functions
-function isCDNAsset(url) {
-  const cdnHosts = [
-    'cdn.tailwindcss.com',
-    'unpkg.com',
-    'cdn.jsdelivr.net',
-    'cdnjs.cloudflare.com',
-    'fonts.googleapis.com',
-    'fonts.gstatic.com'
-  ];
-  
-  return cdnHosts.some(host => url.hostname.includes(host));
-}
-
-function isAppShell(request) {
-  const url = new URL(request.url);
-  return request.destination === 'document' || 
-         url.pathname === '/' || 
-         url.pathname.includes('.html');
-}
-
-async function handleCacheUrls(urls, event) {
+// Refresh critical cache on demand
+async function refreshCriticalCache() {
   try {
-    const cache = await caches.open(CACHE_NAME);
-    await cache.addAll(urls);
-    
-    if (event.ports && event.ports[0]) {
-      event.ports[0].postMessage({ success: true });
-    }
+    await preloadAppShell();
+    const clients = await self.clients.matchAll();
+    clients.forEach(client => {
+      client.postMessage({ type: 'CACHE_REFRESHED' });
+    });
   } catch (error) {
-    console.error('[SW] Failed to cache URLs:', error);
-    if (event.ports && event.ports[0]) {
-      event.ports[0].postMessage({ success: false, error: error.message });
-    }
+    console.error('SW: Cache refresh failed:', error);
   }
 }
 
-async function handleClearCache(event) {
+// Get cache status for debugging
+async function getCacheStatus() {
   try {
     const cacheNames = await caches.keys();
-    await Promise.all(cacheNames.map(name => caches.delete(name)));
-    
-    if (event.ports && event.ports[0]) {
-      event.ports[0].postMessage({ success: true });
+    const status = {
+      caches: cacheNames,
+      persistent: false,
+      storage: null
+    };
+
+    if ('storage' in navigator) {
+      try {
+        status.persistent = await navigator.storage.persisted();
+        if ('estimate' in navigator.storage) {
+          status.storage = await navigator.storage.estimate();
+        }
+      } catch (error) {
+        console.warn('SW: Could not get storage status:', error);
+      }
     }
+
+    return status;
   } catch (error) {
-    console.error('[SW] Failed to clear cache:', error);
-    if (event.ports && event.ports[0]) {
-      event.ports[0].postMessage({ success: false, error: error.message });
-    }
+    console.error('SW: Cache status check failed:', error);
+    return { error: error.message };
   }
 }
-
-// Push notifications (for future pharmacy alerts)
-self.addEventListener('push', event => {
-  console.log('[SW] Push notification received');
-  
-  if (event.data) {
-    const data = event.data.json();
-    
-    const options = {
-      body: data.body || 'New pharmacy notification',
-      icon: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDk2IDk2Ij48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0NCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjQ4IiB5PSI1OCIgZm9udC1zaXplPSI0OCIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+UzwvdGV4dD48L3N2Zz4=',
-      badge: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MiIgaGVpZ2h0PSI3MiIgdmlld0JveD0iMCAwIDcyIDcyIj48Y2lyY2xlIGN4PSIzNiIgY3k9IjM2IiByPSIzNCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjM2IiB5PSI0NCIgZm9udC1zaXplPSIzNiIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+UzwvdGV4dD48L3N2Zz4=',
-      data: data,
-      tag: 'pharmacy-notification',
-      renotify: true
-    };
-    
-    event.waitUntil(
-      self.registration.showNotification(data.title || 'Saladin Pharma', options)
-    );
-  }
-});
-
-// Notification click handler
-self.addEventListener('notificationclick', event => {
-  console.log('[SW] Notification clicked:', event.notification.data);
-  
-  event.notification.close();
-  
-  event.waitUntil(
-    clients.openWindow('/')
-  );
-});
-
-console.log('[SW] Service Worker loaded successfully for Saladin Pharma');
