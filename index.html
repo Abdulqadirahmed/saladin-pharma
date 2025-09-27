@@ -1279,22 +1279,13 @@
       .then((registration) => {
         console.log('SW: Registration successful:', registration.scope);
         
-        // Request persistent storage immediately
-        if ('storage' in navigator && 'persist' in navigator.storage) {
-          navigator.storage.persist().then(persistent => {
-            console.log('Persistent storage granted:', persistent);
-            if (persistent) {
-              updateSyncStatus('offline', '🟢', 'Offline Protected', false);
-            }
-          });
-        }
-        
-        // Check if SW is controlling the page
-        if (navigator.serviceWorker.controller) {
-          updateSyncStatus('offline', '🟢', 'Offline Ready', false);
-          console.log('SW: Already controlling page');
-        }
-        
+       // Request persistent storage immediately
+if ('storage' in navigator && 'persist' in navigator.storage) {
+  navigator.storage.persist().then(persistent => {
+    console.log('Persistent storage granted:', persistent);
+  });
+}
+    
         // Handle updates
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
@@ -1341,10 +1332,12 @@
       console.log('SW: Received message:', type, payload);
       
       switch (type) {
-        case 'SW_READY':
-          updateSyncStatus('offline', '🟢', payload.persistent ? 'Permanently Offline' : 'Offline Ready', false);
-          showToast('App cached and protected from eviction!', 'success');
-          break;
+        case 'SW_READY': {
+  const isOnline = navigator.onLine;
+  updateSyncStatus(isOnline ? 'online' : 'offline', isOnline ? '🟢' : '🔴', isOnline ? 'Online & Cached' : 'Offline Ready', false);
+  showToast('App cached for offline use', 'success');
+  break;
+}
         case 'CACHE_REFRESHED':
           showToast('Cache refreshed successfully', 'info');
           break;
@@ -1428,23 +1421,14 @@ document.getElementById('dismissUpdateBtn')?.addEventListener('click', () => {
 const updateOfflineStatus = () => {
   const offlineIndicator = document.getElementById('offlineIndicator');
   const isOnline = navigator.onLine;
-  const hasServiceWorker = 'serviceWorker' in navigator && navigator.serviceWorker.controller;
-  
+  const hasSW = 'serviceWorker' in navigator && !!navigator.serviceWorker.controller;
+
   if (isOnline) {
     offlineIndicator.classList.remove('show');
-    if (hasServiceWorker) {
-      updateSyncStatus('online', '🟢', 'Online & Cached', false);
-    }
+    updateSyncStatus('online', '🟢', hasSW ? 'Online & Cached' : 'Online', false);
   } else {
-    if (hasServiceWorker) {
-      // App is offline but fully functional thanks to SW
-      offlineIndicator.classList.add('show');
-      updateSyncStatus('offline', '🔴', 'Offline Mode', false);
-    } else {
-      // No service worker, limited functionality
-      offlineIndicator.classList.add('show');
-      updateSyncStatus('error', '⚠️', 'Limited Offline', false);
-    }
+    offlineIndicator.classList.add('show');
+    updateSyncStatus(hasSW ? 'offline' : 'error', hasSW ? '🔴' : '⚠️', hasSW ? 'Offline Ready' : 'Limited Offline', false);
   }
 };
 
@@ -4578,11 +4562,13 @@ window.addEventListener('offline', () => {
       try {
         const result = await authenticateUser(email, password);
         if (result.success) {
-          currentUser = result.user;
-          currentUserEmail = result.user.email;
-          currentUserUUID = result.user.uuid;
-          
-    
+  currentUser = result.user;
+  currentUserEmail = result.user.email;
+  currentUserUUID = result.user.uuid;
+ 
+  // Add this line
+  try { localStorage.setItem('saladin_session', JSON.stringify(currentUser)); } catch {}
+
           // Initialize main app
 el('authScreen').classList.add('hidden');
 el('mainApp').classList.remove('hidden');
@@ -4792,9 +4778,27 @@ updateOnlineStatusUI();
 
     // -------------- Initialization --------------
     const initializeApp = async () => {
-      try {
-        // Initialize dark mode
-        initDarkMode();
+  try {
+    // Auto-restore session
+    try {
+      const ses = JSON.parse(localStorage.getItem('saladin_session') || 'null');
+      if (ses && ses.email && ses.role) {
+        currentUser = ses;
+        currentUserEmail = ses.email;
+        currentUserUUID = ses.uuid;
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('userName').textContent = ses.email;
+        document.getElementById('userRole').textContent = ses.role;
+        applyRoleRestrictions();
+        initializeCharts();
+        await triggerDataSync(['dashboard']);
+        scheduleSyncSoon('auto-session');
+      }
+    } catch {}
+    
+    // Initialize dark mode
+    initDarkMode();
         
         // Update datetime periodically
         updateDateTime();
@@ -4836,16 +4840,16 @@ updateOnlineStatusUI();
     document.addEventListener('DOMContentLoaded', initializeApp);
 
     // Additional error handling
-    window.addEventListener('error', (e) => {
-      console.error('Global error:', e.error);
-      showToast('An unexpected error occurred', 'error');
-    });
+window.addEventListener('error', (e) => {
+  console.error('Global error:', e.error);
+  // showToast('An unexpected error occurred', 'error');  // remove this line
+});
 
-    window.addEventListener('unhandledrejection', (e) => {
-      console.error('Unhandled promise rejection:', e.reason);
-      e.preventDefault();
-    });
-
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('Unhandled promise rejection:', e.reason);
+  e.preventDefault(); // keep this to avoid console noise
+});
+  
     // Expose some globals for debugging (only in development)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       window.SaladinPharma = {
