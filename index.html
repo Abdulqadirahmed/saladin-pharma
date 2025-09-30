@@ -371,7 +371,7 @@
       <div class="text-center mb-8">
         <div class="mx-auto w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow">
           <svg class="w-9 h-9 text-primary" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img">
-            <path d="M12 22a10 10 0 1 1 10-10 10.011 10.011 0 0 1-10 10Zm1-14a1 1 0 1 0-2 0v1.09a4.5 4.5 0 0 0-2 .91C8.6 10.23 8 11 8 12s.6 1.77 1.33 2.26a4.5 4.5 0 0 0 2 .91V17a1 1 0 0 0 2 0v-1.09a4.5 4.5 0 0 0 2-.91C15.4 13.77 16 13 16 12s-.6-1.77-1.33-2.26a4.5 4.5 0 0 0-2-.9Z"/>
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
           </svg>
         </div>
         <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white">Saladin Pharma</h1>
@@ -1298,8 +1298,15 @@ if ('storage' in navigator && 'persist' in navigator.storage) {
                 showUpdateAvailable();
               } else {
                 console.log('SW: First install complete');
-                updateSyncStatus('offline', '🟢', 'Offline Ready', false);
-                showToast('App is now permanently offline-ready!', 'success');
+                setTimeout(() => {
+  if (typeof updateSyncStatus === 'function') {
+    updateSyncStatus('online', '🟢', 'App Ready', false);
+  }
+}, 100);
+
+                if (typeof showToast === 'function') {
+                  showToast('App is now permanently offline-ready!', 'success');
+                }
               }
             }
           });
@@ -1364,20 +1371,36 @@ if ('storage' in navigator && 'persist' in navigator.storage) {
     let wasOffline = false;
     window.addEventListener('offline', () => {
       wasOffline = true;
-      updateSyncStatus('offline', '🔴', 'Working Offline', false);
-      showToast('You\'re offline - app continues to work!', 'info');
-      updateOfflineStatus();
+      if (typeof updateSyncStatus === 'function') {
+        updateSyncStatus('offline', '🔴', 'Working Offline', false);
+      }
+      if (typeof showToast === 'function') {
+        showToast('You\'re offline - app continues to work!', 'info');
+      }
+      setTimeout(() => {
+        if (typeof updateOfflineStatus === 'function') {
+          updateOfflineStatus();
+        }
+      }, 100);
     });
 
     window.addEventListener('online', () => {
       if (wasOffline) {
-        updateSyncStatus('syncing', '🔄', 'Reconnecting...', true);
-        scheduleSyncNow('reconnect');
+        if (typeof updateSyncStatus === 'function') {
+          updateSyncStatus('syncing', '🔄', 'Reconnecting...', true);
+        }
+        if (typeof scheduleSyncNow === 'function') {
+          scheduleSyncNow('reconnect');
+        }
         setTimeout(() => {
-          updateSyncStatus('online', '🟢', 'Back Online', false);
+          if (typeof updateSyncStatus === 'function') {
+            updateSyncStatus('online', '🟢', 'Back Online', false);
+          }
         }, 2000);
       }
-      updateOfflineStatus();
+      if (typeof updateOfflineStatus === 'function') {
+        updateOfflineStatus();
+      }
       // Trigger background sync when coming online
       if ('sync' in window.ServiceWorkerRegistration.prototype) {
         navigator.serviceWorker.ready.then(registration => {
@@ -1385,7 +1408,7 @@ if ('storage' in navigator && 'persist' in navigator.storage) {
         });
       }
     });
-    
+
   } else {
     console.warn('Service Workers not supported');
     updateSyncStatus('error', '⚠️', 'Not Supported', false);
@@ -1421,7 +1444,18 @@ document.getElementById('dismissUpdateBtn')?.addEventListener('click', () => {
 const updateOfflineStatus = () => {
   const offlineIndicator = document.getElementById('offlineIndicator');
   const isOnline = navigator.onLine;
-  const hasSW = 'serviceWorker' in navigator && !!navigator.serviceWorker.controller;
+  
+  console.log('Checking online status:', isOnline); // Debug log
+  
+  if (isOnline) {
+    offlineIndicator.classList.remove('show');
+    // Always show online when actually online
+    updateSyncStatus('online', '🟢', 'Online & Ready', false);
+  } else {
+    offlineIndicator.classList.add('show');
+    updateSyncStatus('offline', '🔴', 'Offline Mode', false);
+  }
+};
 
   if (isOnline) {
     offlineIndicator.classList.remove('show');
@@ -4807,9 +4841,16 @@ updateOnlineStatusUI();
         // Initialize charts for admin users
         setTimeout(initializeCharts, 100);
 
-        // Setup initial sync status
-        updateOnlineStatusUI();
-        updateCloudSyncStatus();
+        // Setup initial sync status - Force online detection
+if (navigator.onLine) {
+  updateSyncStatus('online', '🟢', 'Online & Ready', false);
+} else {
+  updateSyncStatus('offline', '🔴', 'Offline Mode', false);
+}
+updateOfflineStatus();
+if (typeof updateCloudSyncStatus === 'function') {
+  updateCloudSyncStatus();
+}
 
         // Load backup history
         await loadBackupHistory();
