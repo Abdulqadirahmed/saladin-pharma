@@ -19,7 +19,7 @@
   <meta name="apple-touch-fullscreen" content="yes" />
   
   <!-- PWA Manifest -->
-  <link rel="manifest" href="./manifest.json" />
+  <link rel="manifest" href="/manifest.json" />
   
   <!-- Apple Touch Icons -->
   <link rel="apple-touch-icon" sizes="72x72" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MiIgaGVpZ2h0PSI3MiIgdmlld0JveD0iMCAwIDcyIDcyIj48Y2lyY2xlIGN4PSIzNiIgY3k9IjM2IiByPSIzNCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjM2IiB5PSI0NCIgZm9udC1zaXplPSIzNiIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+UzwvdGV4dD48L3N2Zz4=" />
@@ -1252,347 +1252,197 @@
   </div>
 
   <script>
-   // -------------- Enhanced PWA: Service Worker registration with Persistence --------------
-(function registerSW() {
-  if ('serviceWorker' in navigator) {
-    const currentPath = window.location.pathname;
-    const isGitHubPages = window.location.hostname.includes('github.io');
-    
-    let swPath, swScope;
-    
-    if (isGitHubPages) {
-      const pathSegments = currentPath.split('/').filter(Boolean);
-      const repoName = pathSegments[0] || '';
-      swPath = `/${repoName}/sw.js`;
-      swScope = `/${repoName}/`;
-    } else {
-      swPath = './sw.js';
-      swScope = './';
-    }
+    // -------------- Enhanced PWA: Service Worker registration --------------
+    (function registerSW() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+          .then((registration) => {
+            console.log('SW registered:', registration.scope);
+            
+            // Handle updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // New SW is available, show update notification
+                  showUpdateAvailable();
+                }
+              });
+            });
 
-    console.log('SW: Registering persistent service worker...');
-
-    navigator.serviceWorker.register(swPath, { 
-      scope: swScope,
-      updateViaCache: 'none'
-    })
-      .then((registration) => {
-        console.log('SW: Registration successful:', registration.scope);
-        
-        // Request persistent storage immediately
-        if ('storage' in navigator && 'persist' in navigator.storage) {
-          navigator.storage.persist().then(persistent => {
-            console.log('Persistent storage granted:', persistent);
-            if (persistent) {
-              updateSyncStatus('offline', '🟢', 'Offline Protected', false);
+            // Register for background sync
+            if ('sync' in window.ServiceWorkerRegistration.prototype) {
+              registration.sync.register('pharmacy-data-sync').catch(console.error);
             }
-          });
-        }
-        
-        // Check if SW is controlling the page
-        if (navigator.serviceWorker.controller) {
-          updateSyncStatus('offline', '🟢', 'Offline Ready', false);
-          console.log('SW: Already controlling page');
-        }
-        
-        // Handle updates
-        registration.addEventListener('updatefound', () => {
-          const newWorker = registration.installing;
-          console.log('SW: Update found');
-          
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed') {
-              if (navigator.serviceWorker.controller) {
-                console.log('SW: Update available');
-                showUpdateAvailable();
-              } else {
-                console.log('SW: First install complete');
-                updateSyncStatus('offline', '🟢', 'Offline Ready', false);
-                showToast('App is now permanently offline-ready!', 'success');
+          })
+          .catch(error => console.error('SW registration failed:', error));
+
+        // Listen for SW messages
+        navigator.serviceWorker.addEventListener('message', event => {
+          const { type, payload } = event.data;
+          switch (type) {
+            case 'SYNC_BACKGROUND':
+              // Handle background sync completion
+              if (payload.success) {
+                updateSyncStatus('online', '🟢', 'Synced', false);
+                showToast('Background sync completed', 'success');
               }
-            }
-          });
+              break;
+            case 'OFFLINE_FALLBACK':
+              updateSyncStatus('offline', '🔴', 'Offline Ready', false);
+              break;
+          }
         });
 
-        // Register background sync
-        if ('sync' in window.ServiceWorkerRegistration.prototype) {
-          registration.sync.register('pharmacy-data-sync')
-            .then(() => console.log('SW: Background sync registered'))
-            .catch(console.error);
-        }
-
-        // Periodic SW health check
-        setInterval(() => {
-          if (!navigator.serviceWorker.controller) {
-            console.warn('SW: Service Worker lost control, attempting recovery...');
-            registration.update();
+        // Handle fetch events from service worker
+        navigator.serviceWorker.addEventListener('message', event => {
+          if (event.data && event.data.type === 'CACHE_UPDATED') {
+            // Handle cache updates
+            console.log('Cache updated:', event.data.url);
           }
-        }, 60000);
+        });
+      }
+    })();
 
-      })
-      .catch(error => {
-        console.error('SW: Registration failed:', error);
-        updateSyncStatus('error', '⚠️', 'SW Failed', false);
-      });
+    // Show update available notification
+    const showUpdateAvailable = () => {
+      const banner = document.getElementById('pwaUpdateBanner');
+      if (banner) {
+        banner.classList.add('show');
+      }
+    };
 
-    // Enhanced message handling
-    navigator.serviceWorker.addEventListener('message', event => {
-      const { type, payload } = event.data || {};
-      console.log('SW: Received message:', type, payload);
-      
-      switch (type) {
-        case 'SW_READY':
-          updateSyncStatus('offline', '🟢', payload.persistent ? 'Permanently Offline' : 'Offline Ready', false);
-          showToast('App cached and protected from eviction!', 'success');
-          break;
-        case 'CACHE_REFRESHED':
-          showToast('Cache refreshed successfully', 'info');
-          break;
-        case 'SYNC_BACKGROUND':
-          updateSyncStatus('syncing', '🔄', 'Syncing...', true);
-          break;
-        case 'OFFLINE_FALLBACK':
-          updateSyncStatus('offline', '🔴', 'Offline Ready', false);
-          break;
-        case 'CACHE_UPDATED':
-          console.log('Cache updated:', payload?.url);
-          break;
+    // Handle PWA update
+    document.getElementById('updateAppBtn')?.addEventListener('click', () => {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(registration => {
+          if (registration && registration.waiting) {
+            // Tell the SW to skip waiting
+            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            window.location.reload();
+          }
+        });
       }
     });
 
-    // Enhanced controller change handling
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      console.log('SW: Controller changed');
-      updateSyncStatus('offline', '🟢', 'Updated & Ready', false);
-      showToast('App updated with latest offline features', 'success');
+    document.getElementById('dismissUpdateBtn')?.addEventListener('click', () => {
+      document.getElementById('pwaUpdateBanner').classList.remove('show');
     });
 
-    // Monitor online/offline status
-    let wasOffline = false;
-    window.addEventListener('offline', () => {
-      wasOffline = true;
-      updateSyncStatus('offline', '🔴', 'Working Offline', false);
-      showToast('You\'re offline - app continues to work!', 'info');
-      updateOfflineStatus();
-    });
+    // Enhanced offline detection
+    const updateOfflineStatus = () => {
+      const offlineIndicator = document.getElementById('offlineIndicator');
+      if (navigator.onLine) {
+        offlineIndicator.classList.remove('show');
+      } else {
+        offlineIndicator.classList.add('show');
+      }
+    };
 
     window.addEventListener('online', () => {
-      if (wasOffline) {
-        updateSyncStatus('syncing', '🔄', 'Reconnecting...', true);
-        scheduleSyncNow('reconnect');
-        setTimeout(() => {
-          updateSyncStatus('online', '🟢', 'Back Online', false);
-        }, 2000);
-      }
       updateOfflineStatus();
       // Trigger background sync when coming online
-      if ('sync' in window.ServiceWorkerRegistration.prototype) {
+      if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
         navigator.serviceWorker.ready.then(registration => {
           registration.sync.register('pharmacy-data-sync');
         });
       }
     });
     
-  } else {
-    console.warn('Service Workers not supported');
-    updateSyncStatus('error', '⚠️', 'Not Supported', false);
-  }
-})();
+    window.addEventListener('offline', updateOfflineStatus);
 
-// Show update available notification
-const showUpdateAvailable = () => {
-  const banner = document.getElementById('pwaUpdateBanner');
-  if (banner) {
-    banner.classList.add('show');
-  }
-};
+    // Initialize offline status
+    updateOfflineStatus();
 
-// Handle PWA update
-document.getElementById('updateAppBtn')?.addEventListener('click', () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistration().then(registration => {
-      if (registration && registration.waiting) {
-        // Tell the SW to skip waiting
-        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-        window.location.reload();
-      }
-    });
-  }
-});
+    // -------------- Global State --------------
+    let currentUser = null;
+    let currentUserUUID = null;
+    let currentUserEmail = null;
+    let dashboardCharts = {};
+    let isLoginMode = true;
+    let editingPurchaseId = null;
+    let selectedFolderHandle = null;
+    let currentReportKey = null;
+    let currentReportRange = null;
+    let realtimeListeners = new Map(); // Store Firebase listeners
+    let lastSyncTime = null;
+    let syncInProgress = false;
 
-document.getElementById('dismissUpdateBtn')?.addEventListener('click', () => {
-  document.getElementById('pwaUpdateBanner').classList.remove('show');
-});
-
-// Enhanced offline detection with PWA support
-const updateOfflineStatus = () => {
-  const offlineIndicator = document.getElementById('offlineIndicator');
-  const isOnline = navigator.onLine;
-  const hasServiceWorker = 'serviceWorker' in navigator && navigator.serviceWorker.controller;
-  
-  if (isOnline) {
-    offlineIndicator.classList.remove('show');
-    if (hasServiceWorker) {
-      updateSyncStatus('online', '🟢', 'Online & Cached', false);
-    }
-  } else {
-    if (hasServiceWorker) {
-      // App is offline but fully functional thanks to SW
-      offlineIndicator.classList.add('show');
-      updateSyncStatus('offline', '🔴', 'Offline Mode', false);
-    } else {
-      // No service worker, limited functionality
-      offlineIndicator.classList.add('show');
-      updateSyncStatus('error', '⚠️', 'Limited Offline', false);
-    }
-  }
-};
-
-// Initialize offline status
-updateOfflineStatus();    // -------------- Cache Maintenance & Persistence --------------
-    const maintainOfflineCapability = () => {
-      // Check if we have service worker control
-      if (navigator.serviceWorker.controller) {
-        console.log('SW: Offline capability maintained');
-        return true;
-      }
+    // Enhanced sync status tracking
+    const updateSyncStatus = (status, icon, text, pulse = false) => {
+      const statusEl = document.getElementById('syncStatus');
+      const iconEl = document.getElementById('syncIcon');
+      const textEl = document.getElementById('syncText');
       
-      console.warn('SW: Lost service worker control!');
-      
-      // Try to reregister if we lost control
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistration().then(registration => {
-          if (registration) {
-            registration.update();
-          }
-        });
+      if (statusEl && iconEl && textEl) {
+        statusEl.className = `sync-indicator sync-${status}${pulse ? ' sync-pulse' : ''}`;
+        iconEl.textContent = icon;
+        textEl.textContent = text;
       }
-      
-      return false;
     };
 
-    // Run maintenance check every 30 seconds
-    setInterval(maintainOfflineCapability, 30000);
+    // Show real-time sync notification
+    const showSyncNotification = (message) => {
+      const notification = document.getElementById('syncNotification');
+      const textEl = document.getElementById('syncNotificationText');
+      if (notification && textEl) {
+        textEl.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => {
+          notification.classList.remove('show');
+        }, 3000);
+      }
+    };
 
-    // Enhanced visibility change handling
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) {
-        // App became visible, check offline capability
-        setTimeout(maintainOfflineCapability, 1000);
-        
-        // Refresh data if we've been away for a while
-        if (navigator.onLine) {
-          scheduleSyncSoon('visibility-change');
+    // Update cloud sync status in backup section
+    const updateCloudSyncStatus = () => {
+      const statusIcon = document.getElementById('cloudStatusIcon');
+      const statusText = document.getElementById('cloudStatusText');
+      const lastSyncEl = document.getElementById('lastSyncTime');
+      const pendingEl = document.getElementById('pendingChanges');
+      
+      if (statusIcon && statusText) {
+        if (navigator.onLine && window.RTDB) {
+          statusIcon.textContent = '🟢';
+          statusText.textContent = syncInProgress ? 'Syncing...' : 'Connected to Cloud';
+        } else {
+          statusIcon.textContent = '🔴';
+          statusText.textContent = 'Offline - Changes queued for sync';
         }
       }
-    });
-
-    // Handle app installation
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      window.deferredPrompt = e;
       
-      // Show install banner or button
-      showToast('Install this app for better offline experience!', 'info');
-    });
+      if (lastSyncEl && lastSyncTime) {
+        lastSyncEl.textContent = new Date(lastSyncTime).toLocaleString();
+      }
+      
+      // Update pending changes count
+      if (pendingEl) {
+        localDB.syncQueue.count().then(count => {
+          pendingEl.textContent = count;
+        });
+      }
+    };
 
-    // Handle successful app install
-    window.addEventListener('appinstalled', () => {
-      console.log('PWA: App installed successfully');
-      showToast('App installed! Now permanently available offline.', 'success');
-      window.deferredPrompt = null;
-    });
-
-
-// -------------- Global State --------------
-let currentUser = null;
-let currentUserUUID = null;
-let currentUserEmail = null;
-let dashboardCharts = {};
-let isLoginMode = true;
-let editingPurchaseId = null;
-let selectedFolderHandle = null;
-let currentReportKey = null;
-let currentReportRange = null;
-let realtimeListeners = new Map(); // Store Firebase listeners
-let lastSyncTime = null;
-let syncInProgress = false;
-
-// Enhanced sync status tracking
-const updateSyncStatus = (status, icon, text, pulse = false) => {
-  const statusEl = document.getElementById('syncStatus');
-  const iconEl = document.getElementById('syncIcon');
-  const textEl = document.getElementById('syncText');
-  
-  if (statusEl && iconEl && textEl) {
-    statusEl.className = `sync-indicator sync-${status}${pulse ? ' sync-pulse' : ''}`;
-    iconEl.textContent = icon;
-    textEl.textContent = text;
-  }
-};
-
-// Show real-time sync notification
-const showSyncNotification = (message) => {
-  const notification = document.getElementById('syncNotification');
-  const textEl = document.getElementById('syncNotificationText');
-  if (notification && textEl) {
-    textEl.textContent = message;
-    notification.classList.add('show');
-    setTimeout(() => {
-      notification.classList.remove('show');
-    }, 3000);
-  }
-};
-
-// Update cloud sync status in backup section
-const updateCloudSyncStatus = () => {
-  const statusIcon = document.getElementById('cloudStatusIcon');
-  const statusText = document.getElementById('cloudStatusText');
-  const lastSyncEl = document.getElementById('lastSyncTime');
-  const pendingEl = document.getElementById('pendingChanges');
-  
-  if (statusIcon && statusText) {
-    if (navigator.onLine && window.RTDB) {
-      statusIcon.textContent = '🟢';
-      statusText.textContent = syncInProgress ? 'Syncing...' : 'Connected to Cloud';
-    } else {
-      statusIcon.textContent = '🔴';
-      statusText.textContent = 'Offline - Changes queued for sync';
+    // Online/offline UI indicator with enhanced status
+    function updateOnlineStatusUI() {
+      if (navigator.onLine && window.RTDB) {
+        updateSyncStatus('online', '🟢', 'Connected', false);
+      } else {
+        updateSyncStatus('offline', '🔴', 'Offline Ready', false);
+      }
+      updateCloudSyncStatus();
     }
-  }
-  
-  if (lastSyncEl && lastSyncTime) {
-    lastSyncEl.textContent = new Date(lastSyncTime).toLocaleString();
-  }
-  
-  // Update pending changes count
-  if (pendingEl) {
-    localDB.syncQueue.count().then(count => {
-      pendingEl.textContent = count;
+
+    window.addEventListener('online', () => { 
+      updateOnlineStatusUI(); 
+      scheduleSyncNow('network-online'); 
     });
-  }
-};
-
-// Online/offline UI indicator with enhanced status
-function updateOnlineStatusUI() {
-  if (navigator.onLine && window.RTDB) {
-    updateSyncStatus('online', '🟢', 'Connected', false);
-  } else {
-    updateSyncStatus('offline', '🔴', 'Offline Ready', false);
-  }
-  updateCloudSyncStatus();
-}
-
-window.addEventListener('online', () => { 
-  updateOnlineStatusUI(); 
-  scheduleSyncNow('network-online'); 
-});
-
-window.addEventListener('offline', () => {
-  updateOnlineStatusUI();
-  // Clean up Firebase listeners when going offline
-  cleanupRealtimeListeners();
-});
+    
+    window.addEventListener('offline', () => {
+      updateOnlineStatusUI();
+      // Clean up Firebase listeners when going offline
+      cleanupRealtimeListeners();
+    });
 
     // -------------- Dexie DB with enhanced sync queue --------------
     const localDB = new Dexie('SaladinPharmaDB');
