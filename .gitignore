@@ -1,0 +1,49 @@
+# --------------------------
+# Node / npm files
+# --------------------------
+node_modules/
+package-lock.json
+yarn.lock
+
+# --------------------------
+# Build output
+# --------------------------
+dist/
+build/
+out/
+*.js.map
+*.css.map
+
+# --------------------------
+# Environment / API keys
+# --------------------------
+.env
+.env.local
+.env.*.local
+config.json
+config/*.json
+apikeys.json
+*.pem
+*.p12
+
+# --------------------------
+# Logs / temp files
+# --------------------------
+*.log
+*.tmp
+*.temp
+*.bak
+
+# --------------------------
+# OS / IDE files
+# --------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# --------------------------
+# Optional: cache
+# --------------------------
+.cache/
