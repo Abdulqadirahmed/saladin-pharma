@@ -1,0 +1,36 @@
+{
+  "name": "Saladin Pharma - Professional Pharmacy Management",
+  "short_name": "Saladin Pharma",
+  "description": "Professional pharmacy management system for Sheikh Bakri Saphalo Medium Clinic with offline support, inventory tracking, and sales management",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#5D5CDE",
+  "background_color": "#FFFFFF",
+  "categories": [
+    "medical",
+    "health",
+    "business",
+    "productivity"
+  ],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MiIgaGVpZ2h0PSI3MiIgdmlld0JveD0iMCAwIDcyIDcyIj48Y2lyY2xlIGN4PSIzNiIgY3k9IjM2IiByPSIzNCIgZmlsbD0iIzdDN0ZGRiIvPjx0ZXh0IHg9IjM2IiB5PSI0NCIgZm9udC1zaXplPSIzNiIgZmlsbD0iIzVENUNERSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+UzwvdGV4dD48L3N2Zz4=",
+      "sizes": "72x72",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjE5MjAiIHZpZXdCb3g9IjAgMCAxMDgwIDE5MjAiPjxyZWN0IHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjE5MjAiIGZpbGw9IiNGOUZBRkIiLz48cmVjdCB5PSIwIiB3aWR0aD0iMTA4MCIgaGVpZ2h0PSIyMDAiIGZpbGw9InVybCgjZ3JhZCkiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM1RDVDREU7c3RvcC1vcGFjaXR5OjEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM0RjQ2RTU7c3RvcC1vcGFjaXR5OjEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48dGV4dCB4PSI1NDAiIHk9IjEyMCIgZm9udC1zaXplPSI0OCIgZmlsbD0iI0ZGRiIgZm9udC1mYW1pbHk9IkFyaWFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXdlaWdodD0iYm9sZCI+U2FsYWRpbiBQaGFybWE8L3RleHQ+PC9zdmc+",
+      "sizes": "1080x1920",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Saladin Pharma Dashboard"
+    }
+  ]
+}
